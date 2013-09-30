@@ -1,0 +1,186 @@
+% This file is based on the "sig-alternate.tex" V1.9 April 2009
+% This file should be compiled with V2.4 of "sig-alternate.cls" April 2009
+
+\documentclass{sig-alternate}
+
+\usepackage{url}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage{balance}
+\permission{}
+\CopyrightYear{2013}
+%\crdata{0-00000-00-0/00/00}
+\begin{document}
+
+\title{Visualization of Music Artist Networks }
+\numberofauthors{1}
+\author{
+\alignauthor
+Anonymous
+}
+
+
+\date{14 September 2013}
+\maketitle
+\begin {abstract}
+Our project aims to create a visual network of music artists 
+and their relations to other music artists. Data will be obtained 
+from a large number of Wikipedia articles using techniques such 
+as plain text analysis. An auxiliary database will be developed to 
+create structure out of the semi-structered raw data we will receive. 
+This will allow for an efficient searching and give way to a faster user interface. 
+The user interface will be an application that will use an interactive network 
+display that shows the following: the original queried artist, the 
+connections that artist has to other artists, and the connections 
+of other artists in turn. Visualization of our data is one of 
+the main focuses of this project and will be facilitated by our
+ interactive network display application, creating an enjoyable and relatively 
+simple experience for the user to search our structured database.
+
+\end{abstract}
+
+\section{Overview}
+\label{overview}
+The goal of this project is to develop an application that will create 
+a visual map of a music artist's social network. For example, say you query 
+for "Dr. Dre". The query will display how Dr. Dre is related to Eminem as 
+his producer, and to N.W.A as a former member of the group. If you then 
+choose "N.W.A.", the application will explain that N.W.A. is also related to 
+ Ice Cube and MC Ren because they are also former members. The goal is 
+to ultimately have all of the relations to the original query, in this case Dr. Dre, 
+displayed in an interactive graph that the user can use to jump from one 
+artist, band, or fact, to another using the information mined from the data. 
+Data visualization is the goal of our interactive map. Making it easy 
+for the user to query artists and see all of their relations will 
+be facilitated by our interactive graphical application. Also, the data domain 
+of "music" is something almost everyone can relate to, making it 
+a good choice for this project; many people can claim to have domain 
+expertise in the category of music.
+
+The dataset will be taken from a dump of the English Wikipedia. This implies 
+that we will be mining semi-structured data from the wikicode that generates an 
+article text. Also, many of the pages contain a subsection called "Discography" 
+that will need to be mined for this project. To gather the rest of the data, 
+plain text searches can be used to find "produced by", "collaborated with", 
+or "shared stage with" relationships, just to name a few. After mining this 
+semi-structured data, we will be able to store it as structured data in a database 
+that our interactive graph can query. This will be more efficient than the 
+application querying the raw data. 
+
+
+{\bf Note: Please disregard the rest of this article as it is just
+the template given. Only the "Abstract" and "Overview" sections above were 
+for this particular assignment.}
+
+
+\section{Design Considerations}
+\label{design considerations}
+
+Use this section to describe the basic design of your project. Include
+the extensions you proposed either in this section or in section
+\ref{architecture} or in section \ref{implementation}, whereever it
+fits best for your project.
+
+\section{Architecture}
+\label{architecture}
+
+Use this section to describe the overall architecture of your database
+engine, and implementation of your
+project.
+
+\section{Implementation}
+\label{implementation}
+
+Use this section to describe the overall implementation of your
+project.
+
+\section{Lessons Learned}
+\label{mistakes}
+
+Use this section to describe mistakes you made and corrected (or did
+not get a chance to correct including why you didn't).
+
+Graduate students must also include a discussion of how this project
+related to current DBSI research.
+
+\section{Current Status and Future Work}
+\label{current status}
+
+Use this section to describe the current status of your work
+and what else needs to be done.
+
+The next subsection is meant to provide you with some help
+in dealing with figures, tables and citations.
+
+\subsection{Tables, Figures, and Citations/References}
+
+Tables, figures, and citations/references in technical
+documents need to be presented correctly. As many students
+are not familiar with using these objects, here is a quick
+guide extracted from the ACM style guide.
+
+\begin{table}
+\centering
+\caption{Feelings about Issues}
+\begin{tabular}{|l|r|l|} \hline
+Flavor&Percentage&Comments\\ \hline
+Issue 1 &  10\% & Loved it a lot\\ \hline
+Issue 2 &  20\% & Disliked it immensely\\ \hline
+Issue 3 &  30\% & Didn't care one bit\\ \hline
+Issue 4 &  40\% & Duh?\\ \hline
+\end{tabular}
+\end{table}
+
+
+First, note that figures in the term paper must be original,
+that is, created by the student: please do not cut-and-paste
+figures from any other paper you have read. Second, if you
+do need to include figures, they should be handled as
+demonstrated here. State that Figure \ref{sample graphic} is
+a simple illustration used in the ACM Style sample
+document. Figures are never below or above the
+text. Incidentally, in proper technical writing (for reasons
+beyond the scope of this discussion), table captions are
+above the table and figure captions are below the figure.
+
+\begin{figure}[htb]
+\label{sample graphic}
+\begin{center}
+\includegraphics[width=1.5in]{fly.jpg}
+\caption{A sample black \& white graphic (JPG).}
+\end{center}
+\end{figure}
+
+Finally, citing documents needs to be done properly too. For
+example, a paper by Mic Bowman, Saumya K. Debray, and Larry
+L. Peterson could be cited as Bowman, Debray, and Peterson
+\cite{bowman:reasoning}. A set of papers could collectively
+be cited as the literature in this area consists of several
+interesting papers
+\cite{braams:babel,clark:pct,herlihy:methodology}.
+
+You will find the BibTeX entries needed for many papers being cited,
+otherwise you can write your own versions easily and add them to the
+$report.bib$ file in the folder. There are many sample bibtex
+template files that can be used to model your own references.
+
+The list of all references will be generated in ACMRef
+standard style using the \LaTeX{}/BibTeX. Note that you
+need to first the following sequence to get the paper
+compiled correctly:
+
+\begin{enumerate}
+\item {\tt latex} {\em termpaper}
+\item {\tt bibtex} {\em termpaper}
+\item {\tt latex} {\em termpaper}
+\item {\tt latex} {\em termpaper}
+\end{enumerate}
+
+\bibliographystyle{abbrv}
+\bibliography{Assignment 1}
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+\balance
+\end{document}
