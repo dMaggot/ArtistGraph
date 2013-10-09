@@ -32,7 +32,7 @@ class Miner(object):
         self.nodes.append(current_node)
         
         infoboxplugin = artgraph.plugins.infobox.InfoboxPlugin(current_node)
-        self.task_queue.append(self.master.submit_task(infoboxplugin.get_nodes, input_data=(infoboxplugin), modules=("artgraph.plugins.infobox",)))
+        self.task_queue.append(self.master.submit_task(infoboxplugin.get_nodes, input_data=(infoboxplugin,), modules=("artgraph.plugins.infobox",)))
 
         
         
