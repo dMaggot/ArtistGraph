@@ -12,9 +12,9 @@ class Miner(object):
     master = None
     task_queue = []
     
-    def __init__(self):
+    def __init__(self, debug=False):
         mwinterface = pymw.interfaces.GenericInterface()
-        self.master = pymw.PyMW_Master(mwinterface)
+        self.master = pymw.PyMW_Master(mwinterface, delete_files=not debug)
 
     def mine(self, artist):
         self.mine_internal(Node(artist, NodeTypes.ARTIST))

@@ -22,11 +22,12 @@ def main(argv=None): # IGNORE:C0111
     # Setup argument parser
     parser = ArgumentParser(description=program_shortdesc, formatter_class=RawDescriptionHelpFormatter)
     parser.add_argument(dest="artist", help="Name of the artist to start mining (must match the name of the Wikipedia article)")
-    parser.add_argument("-d", "--depth", dest="depth", action="count", help="Set depth for graph analysis", default="5")
+    parser.add_argument("-d", "--debug", dest="debug", action="store_true", help="Turn debugging on", default=False)
+    parser.add_argument("-n", "--depth", dest="depth", help="Set depth for graph analysis", default="5")
     
     # Process arguments
     args = parser.parse_args()
-    m = miner.Miner()
+    m = miner.Miner(args.debug)
     
     m.mine(args.artist)
 
