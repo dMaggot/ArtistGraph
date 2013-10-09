@@ -1,10 +1,10 @@
 import pymw
 import pymw.interfaces
 
-import plugins.infobox
+import artgraph.plugins.infobox
 
-from node import NodeTypes
-from node import Node
+from artgraph.node import NodeTypes
+from artgraph.node import Node
 
 class Miner(object):
     nodes = []
@@ -31,7 +31,7 @@ class Miner(object):
     def mine_internal(self, current_node, level=0, parent=None, relationship=None):
         self.nodes.append(current_node)
         
-        infoboxplugin = plugins.infobox.InfoboxPlugin(current_node)
+        infoboxplugin = artgraph.plugins.infobox.InfoboxPlugin(current_node)
         self.task_queue.append(self.master.submit_task(infoboxplugin.get_nodes, input_data=(infoboxplugin), modules=("artgraph.plugins.infobox",)))
 
         
