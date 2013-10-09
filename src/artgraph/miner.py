@@ -1,9 +1,6 @@
 import pymw
 import pymw.interfaces
 
-
-from exceptions import Exception
-
 import plugins.infobox
 
 from node import NodeTypes
