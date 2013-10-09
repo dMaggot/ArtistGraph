@@ -3,8 +3,9 @@ import mwparserfromhell
 
 class Plugin():
     db = None
+    
     def __init__(self):
-        #TODO Make this a conf
+        # TODO Make this a conf
         self.db = MySQLdb.connect(host="localhost", user="root", passwd="", db="BigData")
         
     def get_wikicode(self, title):
