@@ -26,14 +26,9 @@ class Miner(object):
                 
                 if n.get_predicate() not in self.nodes:
                     self.mine_internal(n.get_predicate())
-            
         
     def mine_internal(self, current_node, level=0, parent=None, relationship=None):
         self.nodes.append(current_node)
         
         infoboxplugin = artgraph.plugins.infobox.InfoboxPlugin(current_node)
         self.task_queue.append(self.master.submit_task(infoboxplugin.get_nodes, input_data=(infoboxplugin,), modules=("artgraph.plugins.infobox",)))
-
-        
-        
-        
