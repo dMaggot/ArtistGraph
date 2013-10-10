@@ -68,25 +68,59 @@ that our interactive graph can query. This will be more efficient than the
 application querying the raw data. 
 
 
-{\bf Note: Please disregard the rest of this article as it is just
-the template given. Only the "Abstract" and "Overview" sections above were 
-for this particular assignment.}
+\section{Dataset}
+\label{dataset}
+
+The first step in creating our database is collection of the raw data
+In order to do this, a database "artistgraph" was created and a table creation
+script was run. Next, the xml dump from Wikipedia was downloaded followed by a
+mwdumper-1.16.java, which was used to extract the data from the xml and load it
+into our "artistgraph" database. The application contained a graphical user interface
+or "gui" which caused some errors. After manipulating the code to resolve the errors,
+the command line method of the mwdumper was used. However, after 246,000 records, the 
+java program would produce an error due to the maximum allowed packet settings in MySQL
+being too low (https://dev.mysql.com/doc/refman/5.1/en/server-system-variables.html#sysvar_max_allowed_packet).
+This value is small by default in order to catch large, incorrect packets.
+This was updated from 16MB to 123MB, resolving the issue.
+
+After running the program
+for more than 24 hours, less than 2 million records were loaded. This prompted an 
+investigation into why it was loading so slowly. The issue was that the main pages
+have auto increment keys and indices, which were incremented after each insert. 
+(https://www.mediawiki.org/wiki/Manual:MWDumper#Performance_Tips)
+Because of this, the insert rate was about 13 records per second, which, for
+millions of records, in unacceptably slow. To resolve this issue, the tables
+where truncated, then, the auto increment definition was removed. Also, the indices
+of the tables was removed as well as the assignment of primary keys. The altered
+script was ran to recreate the tables then the java program was run. This resulted
+in a loading speed of between 600 and 900 records per second. 
+
+This code ran until just shy of 9 million records were loaded. At this point an unknown error
+was presented. Because it is believed that 9 million records is a large majority of the
+database, the java code was not investigated. With the database loaded, the primary keys
+were placed in the tables and the indices were recreated. A mysqldump was initiated 
+but failed perhaps due to the large size of the database. The solution may be a transfer
+from the current file type of .ibd to .frm. To do this, optimization statements have to be 
+run on each table in the database. 
+
+Overall, we have made steady progress on the creation of our database. For the most part, 
+all of the data from Wikipedia that we sought to download has been acquired and placed into
+our personal database, "artistgraph". After converting the files form .ibd to .frm, it should
+be possible for our database to be ready for the next step in our project, the
+\ref{code implementation}. 
 
 
-\section{Design Considerations}
-\label{design considerations}
 
-Use this section to describe the basic design of your project. Include
-the extensions you proposed either in this section or in section
-\ref{architecture} or in section \ref{implementation}, whereever it
-fits best for your project.
-
-\section{Architecture}
-\label{architecture}
+\section{Code Implementation}
+\label{code implementation}
 
 Use this section to describe the overall architecture of your database
 engine, and implementation of your
 project.
+
+{\bf Note: Please disregard the rest of this article as it is just
+the template given. Only the above sections were 
+for this particular assignment.}
 
 \section{Implementation}
 \label{implementation}
