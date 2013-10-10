@@ -79,15 +79,14 @@ into our "artistgraph" database. The application contained a graphical user inte
 or "gui" which caused some errors. After manipulating the code to resolve the errors,
 the command line method of the mwdumper was used. However, after 246,000 records, the 
 java program would produce an error due to the maximum allowed packet settings in MySQL
-being too low (https://dev.mysql.com/doc/refman/5.1/en/server-system-variables.html#sysvar_max_allowed_packet).
+being too low\footnote{\url{https://dev.mysql.com/doc/refman/5.1/en/server-system-variables.html#sysvar_max_allowed_packet}}.
 This value is small by default in order to catch large, incorrect packets.
 This was updated from 16MB to 123MB, resolving the issue.
 
 After running the program
 for more than 24 hours, less than 2 million records were loaded. This prompted an 
 investigation into why it was loading so slowly. The issue was that the main pages
-have auto increment keys and indices, which were incremented after each insert. 
-(https://www.mediawiki.org/wiki/Manual:MWDumper#Performance_Tips)
+have auto increment keys and indices, which were incremented after each insert\footnote{\url{https://www.mediawiki.org/wiki/Manual:MWDumper#Performance_Tips}}.
 Because of this, the insert rate was about 13 records per second, which, for
 millions of records, in unacceptably slow. To resolve this issue, the tables
 where truncated, then, the auto increment definition was removed. Also, the indices
