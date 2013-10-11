@@ -71,7 +71,7 @@ application querying the raw data.
 \section{Dataset}
 \label{dataset}
 
-The first step in creating our database is collection of the raw data
+The first step in creating our database was collection of the raw data. 
 In order to do this, a database "artistgraph" was created and a table creation
 script was run. Next, the xml dump from Wikipedia was downloaded followed by a
 mwdumper-1.16.java, which was used to extract the data from the xml and load it
@@ -85,12 +85,12 @@ This was updated from 16MB to 123MB, resolving the issue.
 
 After running the program
 for more than 24 hours, less than 2 million records were loaded. This prompted an 
-investigation into why it was loading so slowly. The issue was that the main pages
-have auto increment keys and indices, which were incremented after each insert\footnote{\url{https://www.mediawiki.org/wiki/Manual:MWDumper#Performance_Tips}}.
+investigation into why it was loading so slowly. The issue was that the main tables 
+(page, revision, and text) have auto increment keys and indices, which were incremented after each insert\footnote{\url{https://www.mediawiki.org/wiki/Manual:MWDumper#Performance_Tips}}.
 Because of this, the insert rate was about 13 records per second, which, for
 millions of records, in unacceptably slow. To resolve this issue, the tables
-where truncated, then, the auto increment definition was removed. Also, the indices
-of the tables was removed as well as the assignment of primary keys. The altered
+where truncated, then, the auto increment definition was removed. The indices
+of the tables were also removed,along with the assignment of primary keys. The altered
 script was ran to recreate the tables then the java program was run. This resulted
 in a loading speed of between 600 and 900 records per second. 
 
