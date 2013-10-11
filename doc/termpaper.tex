@@ -27,7 +27,7 @@ Our project aims to create a visual network of music artists
 and their relations to other music artists. Data will be obtained 
 from a large number of Wikipedia articles using techniques such 
 as plain text analysis. An auxiliary database will be developed to 
-create structure out of the semi-structered raw data we will receive. 
+create structure out of the semi-structured raw data we will receive. 
 This will allow for an efficient searching and give way to a faster user interface. 
 The user interface will be an application that will use an interactive network 
 display that shows the following: the original queried artist, the 
@@ -71,14 +71,14 @@ application querying the raw data.
 \section{Dataset}
 \label{dataset}
 
-The first step in creating our database was collection of the raw data. 
+The first step in creating our database was the collection of the raw data.
 In order to do this, a database "artistgraph" was created and a table creation
-script was run. Next, the xml dump from Wikipedia was downloaded followed by a
-mwdumper-1.16.java, which was used to extract the data from the xml and load it
+script was run. Next, the XML dump from Wikipedia was downloaded followed by a
+mwdumper-1.16.Java, which was used to extract the data from the XML and load it
 into our "artistgraph" database. The application contained a graphical user interface
-or "gui" which caused some errors. After manipulating the code to resolve the errors,
+or "GUI" which caused some errors. After manipulating the code to resolve the errors,
 the command line method of the mwdumper was used. However, after 246,000 records, the 
-java program would produce an error due to the maximum allowed packet settings in MySQL
+Java program would produce an error due to the maximum allowed packet settings in MySQL
 being too low\footnote{\url{https://dev.mysql.com/doc/refman/5.1/en/server-system-variables.html#sysvar_max_allowed_packet}}.
 This value is small by default in order to catch large, incorrect packets.
 This was updated from 16MB to 123MB, resolving the issue.
@@ -88,24 +88,33 @@ for more than 24 hours, less than 2 million records were loaded. This prompted a
 investigation into why it was loading so slowly. The issue was that the main tables 
 (page, revision, and text) have auto increment keys and indices, which were incremented after each insert\footnote{\url{https://www.mediawiki.org/wiki/Manual:MWDumper#Performance_Tips}}.
 Because of this, the insert rate was about 13 records per second, which, for
-millions of records, in unacceptably slow. To resolve this issue, the tables
-where truncated, then, the auto increment definition was removed. The indices
-of the tables were also removed,along with the assignment of primary keys. The altered
-script was ran to recreate the tables then the java program was run. This resulted
-in a loading speed of between 600 and 900 records per second. 
+millions of records, is unacceptably slow. To resolve this issue, the tables
+were truncated, and the auto increment definition was removed. The indices
+of the tables were also removed along with the assignment of primary keys. The altered
+script was executed to recreate the tables, and the Java program was run. This resulted
+in a loading speed between 600 and 900 records per second. 
 
-This code ran until just shy of 9 million records were loaded. At this point an unknown error
+This code ran until just shy of 9 million records were loaded. At this point, an unknown error
 was presented. Because it is believed that 9 million records is a large majority of the
-database, the java code was not investigated. With the database loaded, the primary keys
-were placed in the tables and the indices were recreated. A mysqldump was initiated 
-but failed perhaps due to the large size of the database. The solution may be a transfer
-from the current file type of .ibd to .frm. To do this, optimization statements have to be 
-run on each table in the database. 
+database, the Java code and the XML file were not examined, since the project was still in an early stage of development. 
+With the database loaded, the primary keys were placed in the tables and the indices were recreated.  
+The creation of these indices and the assignment of the primary keys only took a couple of hours. 
+Considering that the alternative (loading the data with the indices in place) would have taken approximately a week or more,
+It was well worth the extra work of removing them and then recreating them.
+ 
+Since this database was originally created on a single team member's computer, it was necessary to find a way to copy, 
+or move the database to a new location, or at least prove that it could be done for later work.
+In order to do this, a MySQL dump was initiated, but failed. This was, perhaps, due to the large size of the database. 
+To overcome this, table optimization statements were executed against each table in the "artistgraph" database. 
+This created separate .idb and .frm files for each table. The .frm file contains the structure of the table, while the 
+.idb file contains the data for the table. Copies of these files (more than 100 in total) were made and zipped so that it could 
+be shared between the team members. This effectively made the database transferable and proved it was feasible to move the files in the future.
+ 
 
 Overall, we have made steady progress on the creation of our database. For the most part, 
 all of the data from Wikipedia that we sought to download has been acquired and placed into
-our personal database, "artistgraph". After converting the files form .ibd to .frm, it should
-be possible for our database to be ready for the next step in our project, the
+our personal database, "artistgraph". Since we were able to transport the database from one system to another, 
+our database should be ready for the next step in our project, code implementation
 \ref{code implementation}. 
 
 \section{Architecture}
