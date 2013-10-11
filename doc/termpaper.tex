@@ -20,7 +20,7 @@ Anonymous
 }
 
 
-\date{14 September 2013}
+\date{11 October 2013}
 \maketitle
 \begin {abstract}
 Our project aims to create a visual network of music artists 
@@ -108,24 +108,43 @@ our personal database, "artistgraph". After converting the files form .ibd to .f
 be possible for our database to be ready for the next step in our project, the
 \ref{code implementation}. 
 
+\section{Architecture}
+\label{architecture}
 
+The overall architecture of this project is that of a Master/Worker execution model. \cite{Garg:2001:TOA:558986}
+This allows for parallel evaluation of nodes in the graphical representation of data. 
+The "Master" is a miner which collects and manages the nodes. Nodes will represent 
+concepts such as artists, songs, or albums which will ultimately be mapped to Wikipedia 
+articles. The "Workers" execute the plugins on every node to return more nodes which are 
+related to the chosen node. This plugin architecture subscribes modules of code to be 
+executed on particular nodes. For example, the "Infobox" plugin is meant to be executed 
+in "Artist" nodes, extracting "Associated Acts" from the Wikipedia article of the particular 
+artist of that node. Each plugin will find nodes related to the selected node and return 
+the type of relationship that the nodes have, be it producer, band member, or other relationship. 
+So far, the "Infobox" plugin is the only plugin that has a developed code ready for implementation. 
+Future plugins will further facilitate the applications function.
 
 \section{Code Implementation}
 \label{code implementation}
 
-Use this section to describe the overall architecture of your database
-engine, and implementation of your
-project.
+In order for our application to work, a coding scheme needed to be selected. This project 
+requires a code that would be easily extensible to parallel computing at a later phase of 
+coding while also allowing us to develop portions locally. Initially, Hadoop seemed like 
+a viable option, as it is a popular solution for large parallel applications. However, 
+this choice would not allow us to execute different pieces of code simultaneously. Because 
+Hadoop requires a single algorithm for each reduction step, it was not our choice for this project. 
+
+Our eventual choice of code for the implementation of our application was PyMW \cite {ieee5161132}. 
+This was chosen because it will allow for a "Generic Interface" to be used for development. 
+This interface can then be transparently switched to an MPI interface for parallel computing and 
+benchmarking. Future work will include developing the code further to create our node based 
+application, making sure that it will work with our database, and deciding on a general 
+aesthetic look for the nodes in our application and the associated code required for such nodes. 
 
 {\bf Note: Please disregard the rest of this article as it is just
 the template given. Only the above sections were 
 for this particular assignment.}
 
-\section{Implementation}
-\label{implementation}
-
-Use this section to describe the overall implementation of your
-project.
 
 \section{Lessons Learned}
 \label{mistakes}
