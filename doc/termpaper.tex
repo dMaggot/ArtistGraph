@@ -73,11 +73,11 @@ application querying the raw data.
 
 The first step in creating our database was the collection of the raw data.
 In order to do this, a database ``artistgraph'' was created and a table creation
-script was run. Next, the XML dump from Wikipedia was downloaded followed by a
-mwdumper-1.16.Java, which was used to extract the data from the XML and load it
+script was run matching the structure of a wikipedia database. Next, a XML dump from the Wikipedia was downloaded and
+mwdumper 1.16, a Java application, was used to extract the data from the XML and load it
 into our ``artistgraph'' database. The application contained a graphical user interface
-or ``GUI'' which caused some errors. After manipulating the code to resolve the errors,
-the command line method of the mwdumper was used. However, after 246,000 records, the 
+or ``GUI'' which caused some errors. To avoid manipulating the code to resolve these errors,
+the command line method of mwdumper was preferred. However, after 246,000 records, the 
 Java program would produce an error due to the maximum allowed packet settings in MySQL
 being too low\footnote{\url{https://dev.mysql.com/doc/refman/5.1/en/server-system-variables.html#sysvar_max_allowed_packet}}.
 This value is small by default in order to catch large, incorrect packets.
