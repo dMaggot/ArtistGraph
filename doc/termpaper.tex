@@ -43,9 +43,9 @@ simple experience for the user to search our structured database.
 \label{overview}
 The goal of this project is to develop an application that will create 
 a visual map of a music artist's social network. For example, say you query 
-for "Dr. Dre". The query will display how Dr. Dre is related to Eminem as 
+for ``Dr. Dre". The query will display how Dr. Dre is related to Eminem as 
 his producer, and to N.W.A as a former member of the group. If you then 
-choose "N.W.A.", the application will explain that N.W.A. is also related to 
+choose ``N.W.A.", the application will explain that N.W.A. is also related to 
  Ice Cube and MC Ren because they are also former members. The goal is 
 to ultimately have all of the relations to the original query, in this case Dr. Dre, 
 displayed in an interactive graph that the user can use to jump from one 
@@ -53,16 +53,16 @@ artist, band, or fact, to another using the information mined from the data.
 Data visualization is the goal of our interactive map. Making it easy 
 for the user to query artists and see all of their relations will 
 be facilitated by our interactive graphical application. Also, the data domain 
-of "music" is something almost everyone can relate to, making it 
+of ``music'' is something almost everyone can relate to, making it 
 a good choice for this project; many people can claim to have domain 
 expertise in the category of music.
 
 The dataset will be taken from a dump of the English Wikipedia. This implies 
 that we will be mining semi-structured data from the wikicode that generates an 
-article text. Also, many of the pages contain a subsection called "Discography" 
+article text. Also, many of the pages contain a subsection called ``Discography'' 
 that will need to be mined for this project. To gather the rest of the data, 
-plain text searches can be used to find "produced by", "collaborated with", 
-or "shared stage with" relationships, just to name a few. After mining this 
+plain text searches can be used to find ``produced by", ``collaborated with", 
+or ``shared stage with'' relationships, just to name a few. After mining this 
 semi-structured data, we will be able to store it as structured data in a database 
 that our interactive graph can query. This will be more efficient than the 
 application querying the raw data. 
@@ -72,11 +72,11 @@ application querying the raw data.
 \label{dataset}
 
 The first step in creating our database was the collection of the raw data.
-In order to do this, a database "artistgraph" was created and a table creation
+In order to do this, a database ``artistgraph'' was created and a table creation
 script was run. Next, the XML dump from Wikipedia was downloaded followed by a
 mwdumper-1.16.Java, which was used to extract the data from the XML and load it
-into our "artistgraph" database. The application contained a graphical user interface
-or "GUI" which caused some errors. After manipulating the code to resolve the errors,
+into our ``artistgraph'' database. The application contained a graphical user interface
+or ``GUI'' which caused some errors. After manipulating the code to resolve the errors,
 the command line method of the mwdumper was used. However, after 246,000 records, the 
 Java program would produce an error due to the maximum allowed packet settings in MySQL
 being too low\footnote{\url{https://dev.mysql.com/doc/refman/5.1/en/server-system-variables.html#sysvar_max_allowed_packet}}.
@@ -105,7 +105,7 @@ It was well worth the extra work of removing them and then recreating them.
 Since this database was originally created on a single team member's computer, it was necessary to find a way to copy, 
 or move the database to a new location, or at least prove that it could be done for later work.
 In order to do this, a MySQL dump was initiated, but failed. This was, perhaps, due to the large size of the database. 
-To overcome this, table optimization statements were executed against each table in the "artistgraph" database. 
+To overcome this, table optimization statements were executed against each table in the ``artistgraph'' database. 
 This created separate .idb and .frm files for each table. The .frm file contains the structure of the table, while the 
 .idb file contains the data for the table. Copies of these files (more than 100 in total) were made and zipped so that it could 
 be shared between the team members. This effectively made the database transferable and proved it was feasible to move the files in the future.
@@ -113,7 +113,7 @@ be shared between the team members. This effectively made the database transfera
 
 Overall, we have made steady progress on the creation of our database. For the most part, 
 all of the data from Wikipedia that we sought to download has been acquired and placed into
-our personal database, "artistgraph". Since we were able to transport the database from one system to another, 
+our personal database, ``artistgraph". Since we were able to transport the database from one system to another, 
 our database should be ready for the next step in our project, code implementation
 \ref{code implementation}. 
 
@@ -122,15 +122,15 @@ our database should be ready for the next step in our project, code implementati
 
 The overall architecture of this project is that of a Master/Worker execution model\cite{Garg:2001:TOA:558986}.
 This allows for parallel evaluation of nodes in the graphical representation of data. 
-The "Master" is a miner which collects and manages the nodes. Nodes will represent 
+The ``Master'' is a miner which collects and manages the nodes. Nodes will represent 
 concepts such as artists, songs, or albums which will ultimately be mapped to Wikipedia 
-articles. The "Workers" execute the plugins on every node to return more nodes which are 
+articles. The ``Workers'' execute the plugins on every node to return more nodes which are 
 related to the chosen node. This plugin architecture subscribes modules of code to be 
-executed on particular nodes. For example, the "Infobox" plugin is meant to be executed 
-in "Artist" nodes, extracting "Associated Acts" from the Wikipedia article of the particular 
+executed on particular nodes. For example, the ``Infobox'' plugin is meant to be executed 
+in ``Artist'' nodes, extracting ``Associated Acts'' from the Wikipedia article of the particular 
 artist of that node. Each plugin will find nodes related to the selected node and return 
 the type of relationship that the nodes have, be it producer, band member, or other relationship. 
-So far, the "Infobox" plugin is the only plugin that has a developed code ready for implementation. 
+So far, the ``Infobox'' plugin is the only plugin that has a developed code ready for implementation. 
 Future plugins will further facilitate the applications function. Figure \ref{componentdiagram}
 shows a component diagram for the current model.
 
@@ -152,7 +152,7 @@ this choice would not allow us to execute different pieces of code simultaneousl
 Hadoop requires a single algorithm for each reduction step, it was not our choice for this project. 
 
 Our eventual choice of code for the implementation of our application was PyMW \cite {ieee5161132}. 
-This was chosen because it will allow for a "Generic Interface" to be used for development. 
+This was chosen because it will allow for a ``Generic Interface'' to be used for development. 
 This interface can then be transparently switched to an MPI interface for parallel computing and 
 benchmarking. Future work will include developing the code further to create our node based 
 application, making sure that it will work with our database, and deciding on a general 
@@ -247,7 +247,7 @@ compiled correctly:
 
 \bibliographystyle{abbrv}
 \bibliography{termpaper}
-% You must have a proper ".bib" file
+% You must have a proper ``.bib'' file
 %  and remember to run:
 % latex bibtex latex latex
 % to resolve all references
