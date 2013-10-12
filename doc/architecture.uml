@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_IwGxsDIhEeO78NGnoYOYgw" name="Model">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_IwGxsTIhEeO78NGnoYOYgw">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Component" xmi:id="_TFLvIDIhEeO78NGnoYOYgw" clientDependency="_wwSM0DJzEeOfCOfHvBwaaA _w_ZLIDMIEeOfCOfHvBwaaA" name="Miner"/>
+  <packagedElement xmi:type="uml:Component" xmi:id="_QTOdgDIkEeO78NGnoYOYgw" clientDependency="_AmZnIDMHEeOfCOfHvBwaaA" name="Shell" isActive="true"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_bWd28DJwEeOfCOfHvBwaaA" name="Plugins">
+    <packagedElement xmi:type="uml:Component" xmi:id="_ZYKJEDIhEeO78NGnoYOYgw" clientDependency="_vw27cDMIEeOfCOfHvBwaaA" name="Infobox Plugin"/>
+    <packagedElement xmi:type="uml:InterfaceRealization" xmi:id="_vw27cDMIEeOfCOfHvBwaaA" name="Realization0" client="_ZYKJEDIhEeO78NGnoYOYgw" supplier="_qkrxgDMIEeOfCOfHvBwaaA" contract="_qkrxgDMIEeOfCOfHvBwaaA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_e0CCoDJzEeOfCOfHvBwaaA" name="mine"/>
+  <packagedElement xmi:type="uml:InterfaceRealization" xmi:id="_wwSM0DJzEeOfCOfHvBwaaA" name="Realization1" client="_TFLvIDIhEeO78NGnoYOYgw" supplier="_e0CCoDJzEeOfCOfHvBwaaA" contract="_e0CCoDJzEeOfCOfHvBwaaA"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_AmZnIDMHEeOfCOfHvBwaaA" name="Usage0" client="_QTOdgDIkEeO78NGnoYOYgw" supplier="_e0CCoDJzEeOfCOfHvBwaaA"/>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_qkrxgDMIEeOfCOfHvBwaaA" name="get_nodes"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_w_ZLIDMIEeOfCOfHvBwaaA" name="Usage1" client="_TFLvIDIhEeO78NGnoYOYgw" supplier="_qkrxgDMIEeOfCOfHvBwaaA"/>
+</uml:Model>

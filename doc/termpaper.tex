@@ -120,7 +120,7 @@ our database should be ready for the next step in our project, code implementati
 \section{Architecture}
 \label{architecture}
 
-The overall architecture of this project is that of a Master/Worker execution model. \cite{Garg:2001:TOA:558986}
+The overall architecture of this project is that of a Master/Worker execution model\cite{Garg:2001:TOA:558986}.
 This allows for parallel evaluation of nodes in the graphical representation of data. 
 The "Master" is a miner which collects and manages the nodes. Nodes will represent 
 concepts such as artists, songs, or albums which will ultimately be mapped to Wikipedia 
@@ -131,7 +131,15 @@ in "Artist" nodes, extracting "Associated Acts" from the Wikipedia article of th
 artist of that node. Each plugin will find nodes related to the selected node and return 
 the type of relationship that the nodes have, be it producer, band member, or other relationship. 
 So far, the "Infobox" plugin is the only plugin that has a developed code ready for implementation. 
-Future plugins will further facilitate the applications function.
+Future plugins will further facilitate the applications function. Figure \ref{componentdiagram}
+shows a component diagram for the current model.
+
+\begin{figure*}[ht!]
+\centering
+\includegraphics[width=10cm]{ArtistGraph_Architecture.PDF}
+\caption{Component Diagram of the ArtistGraph model}
+\label{componentdiagram}
+\end{figure*}
 
 \section{Code Implementation}
 \label{code implementation}
@@ -238,7 +246,7 @@ compiled correctly:
 \end{enumerate}
 
 \bibliographystyle{abbrv}
-\bibliography{Assignment 1}
+\bibliography{termpaper}
 % You must have a proper ".bib" file
 %  and remember to run:
 % latex bibtex latex latex
