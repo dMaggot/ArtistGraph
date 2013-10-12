@@ -94,13 +94,13 @@ of the tables were also removed along with the assignment of primary keys. The a
 script was executed to recreate the tables, and the Java program was run. This resulted
 in a loading speed between 600 and 900 records per second. 
 
-This code ran until just shy of 9 million records were loaded. At this point, an unknown error
-was presented. Because it is believed that 9 million records is a large majority of the
-database, the Java code and the XML file were not examined, since the project was still in an early stage of development. 
+This code ran until just shy of 9 million records were loaded. At this point, an unknown error occurred.
+Because it is believed that 9 million records is a large majority of the
+database, the Java code and the XML file have not been examined yet, since the project is still in an early stage of development. 
 With the database loaded, the primary keys were placed in the tables and the indices were recreated.  
 The creation of these indices and the assignment of the primary keys only took a couple of hours. 
 Considering that the alternative (loading the data with the indices in place) would have taken approximately a week or more,
-It was well worth the extra work of removing them and then recreating them.
+it was well worth the extra work of removing and then recreating them.
  
 Since this database was originally created on a single team member's computer, it was necessary to find a way to copy, 
 or move the database to a new location, or at least prove that it could be done for later work.
@@ -108,9 +108,8 @@ In order to do this, a MySQL dump was initiated, but failed. This was, perhaps, 
 To overcome this, table optimization statements were executed against each table in the ``artistgraph'' database. 
 This created separate .idb and .frm files for each table. The .frm file contains the structure of the table, while the 
 .idb file contains the data for the table. Copies of these files (more than 100 in total) were made and zipped so that it could 
-be shared between the team members. This effectively made the database transferable and proved it was feasible to move the files in the future.
+be shared between the team members. This effectively made the database transferable and proved to be a feasible to move the files in the future.
  
-
 Overall, we have made steady progress on the creation of our database. For the most part, 
 all of the data from Wikipedia that we sought to download has been acquired and placed into
 our personal database, ``artistgraph". Since we were able to transport the database from one system to another, 
