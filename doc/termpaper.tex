@@ -116,8 +116,8 @@ our personal database, ``artistgraph". Since we were able to transport the datab
 our database should be ready for the next step in our project, code implementation
 \ref{code implementation}. 
 
-\section{Architecture}
-\label{architecture}
+\section{Architecture and Code Implementation}
+\label{architecture and code implementation}
 
 The overall architecture of this project is that of a Master/Worker execution model\cite{Garg:2001:TOA:558986}.
 This allows for parallel evaluation of nodes in the graphical representation of data. 
@@ -129,8 +129,8 @@ executed on particular nodes. For example, the ``Infobox'' plugin is meant to be
 in ``Artist'' nodes, extracting ``Associated Acts'' from the Wikipedia article of the particular 
 artist of that node. Each plugin will find nodes related to the selected node and return 
 the type of relationship that the nodes have, be it producer, band member, or other relationship. 
-So far, the ``Infobox'' plugin is the only plugin that has a developed code ready for implementation. 
-Future plugins will further facilitate the applications function. Figure \ref{componentdiagram}
+So far, the ``Infobox'' plugin is the only plugin that has been coded. 
+Future plugins will further expand the functionallity of the application. Figure \ref{componentdiagram}
 shows a component diagram for the current model.
 
 \begin{figure*}[ht!]
@@ -140,20 +140,23 @@ shows a component diagram for the current model.
 \label{componentdiagram}
 \end{figure*}
 
-\section{Code Implementation}
-\label{code implementation}
-
-In order for our application to work, a coding scheme needed to be selected. This project 
+In order for our application to scale easily if needed, a coding framework needed to be selected. This project 
 requires a code that would be easily extensible to parallel computing at a later phase of 
 coding while also allowing us to develop portions locally. Initially, Hadoop seemed like 
 a viable option, as it is a popular solution for large parallel applications. However, 
 this choice would not allow us to execute different pieces of code simultaneously. Because 
 Hadoop requires a single algorithm for each reduction step, it was not our choice for this project. 
 
-Our eventual choice of code for the implementation of our application was PyMW \cite {ieee5161132}. 
+Our eventual choice of framework for the implementation of our application was PyMW\cite {ieee5161132}. 
 This was chosen because it will allow for a ``Generic Interface'' to be used for development. 
-This interface can then be transparently switched to an MPI interface for parallel computing and 
-benchmarking. Future work will include developing the code further to create our node based 
+This interface can then be transparently switched to a MPI interface for parallel computing and 
+benchmarking. It is important to notice that the original code samples for PyMW fell short from
+providing information on how to invoke object methods remotely (as opposed to invoking functions
+that are part of the standard Python distribution) but these challenges were overcome by
+understanding the way this framework splits code for remote execution and applying knowledge
+of Python's implementation of Object Oriented Programming.
+
+Future work will include developing the code further to create our node based 
 application, making sure that it will work with our database, and deciding on a general 
 aesthetic look for the nodes in our application and the associated code required for such nodes. 
 
