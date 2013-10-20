@@ -1,12 +1,13 @@
 from artgraph.plugins.plugin import Plugin
-from artgraph.node import Node, NodeTypes
-from artgraph.relationship import AssociatedActRelationship
 
 class InfoboxPlugin(Plugin):
     def __init__(self, node):
         self._node = node
         
     def get_nodes(self):
+        from artgraph.node import Node, NodeTypes
+        from artgraph.relationship import AssociatedActRelationship
+        
         wikicode = self.get_wikicode(self._node.get_title())
         templates = wikicode.filter_templates()
         relationships = []
