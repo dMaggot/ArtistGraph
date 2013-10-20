@@ -6,9 +6,6 @@ class InfoboxPlugin(Plugin):
     def __init__(self, node):
         self._node = node
         
-    def get_relationship_type(self):
-        return AssociatedActRelationship
-        
     def get_nodes(self):
         wikicode = self.get_wikicode(self._node.get_title())
         templates = wikicode.filter_templates()
