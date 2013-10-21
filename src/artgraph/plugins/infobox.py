@@ -8,7 +8,7 @@ class InfoboxPlugin(Plugin):
         from artgraph.node import Node, NodeTypes
         from artgraph.relationship import AssociatedActRelationship
         
-        wikicode = self.get_wikicode(self._node.get_title())
+        wikicode = self.get_wikicode(self._node.get_dbtitle())
         templates = wikicode.filter_templates()
         relationships = []
 
