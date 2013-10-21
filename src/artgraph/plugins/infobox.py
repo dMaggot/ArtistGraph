@@ -17,7 +17,7 @@ class InfoboxPlugin(Plugin):
                 associated_acts = t.get('associated_acts')
                 
                 for w in associated_acts.value.filter_wikilinks():
-                    relationships.append(AssociatedActRelationship(self._node, Node(w.title, NodeTypes.ARTIST)))
+                    relationships.append(AssociatedActRelationship(self._node, Node(str(w.title), NodeTypes.ARTIST)))
                 
         return relationships
         
