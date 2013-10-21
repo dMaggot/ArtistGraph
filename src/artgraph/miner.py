@@ -18,7 +18,7 @@ class Miner(object):
 
     def mine(self, artist):
         self.mine_internal(Node(artist, NodeTypes.ARTIST))
-        new_relationships = self.master.get_result()
+        (finished_task, new_relationships) = self.master.get_result()
         
         while new_relationships:
             for n in new_relationships:
