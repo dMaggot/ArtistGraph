@@ -4,8 +4,7 @@ import mwparserfromhell
 class Plugin():
 
     def get_wikicode(self, title):
-        # TODO Make this a conf
-        db = MySQLdb.connect(host="localhost", user="root", passwd="", db="BigData")
+        db = MySQLdb.connect(read_default_file="./my.cnf")
         clean_title = title.replace(" ", "_")
         
         cursor = db.cursor()
