@@ -16,5 +16,5 @@ class Relationship():
         
 class AssociatedActRelationship(Relationship):
     def __init__(self, subject, predicate):
-        Relationship(subject, predicate)
+        Relationship.__init__(self, subject, predicate)
     
