@@ -17,8 +17,8 @@ Instructions
 * Setup your my.cnf file using the sample file provided
 * Run the program from this directory using
 
-  $ python artistgraph/shell <artist name>
+  $ python artistgraph/shell.py <artist name>
   
   you can use the -d flag for debugging:
   
-  $ python artistgraph/shell -d <artist name>
+  $ python artistgraph/shell.py -d <artist name>
