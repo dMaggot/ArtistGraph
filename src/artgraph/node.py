@@ -3,6 +3,7 @@ from enum import Enum
 NodeTypes = Enum('ARTIST', 'DISCOGRAPHY', 'SONG', 'LOCATION')
 
 class Node(object):
+    _id = None
     _title = None
     _dbtitle = None
     _image = None
@@ -30,4 +31,10 @@ class Node(object):
             return self._dbtitle
         else:
             return self._title.replace(" ", "_")
+        
+    def set_id(self, node_id):
+        self._id = node_id
+        
+    def get_id(self):
+        return self._id
         
