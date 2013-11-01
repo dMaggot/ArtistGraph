@@ -37,6 +37,7 @@ class Miner(object):
                         INSERT INTO `artist` (`stageName`)
                         VALUES  (%s)
                         """, (new_node.get_title()))
+                        new_node.set_id(self.db.insert_id())
                         
                     self.db.commit()
                     self.mine_internal(new_node)
