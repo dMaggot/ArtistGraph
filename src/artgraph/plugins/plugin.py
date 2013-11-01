@@ -24,3 +24,6 @@ class Plugin():
             return None
         
         return mwparserfromhell.parse(result[0])
+    
+    def get_artistgraph_connection(self):
+        return MySQLdb.connect(read_default_file="./my.cnf", read_default_group="client_artistgraph")
