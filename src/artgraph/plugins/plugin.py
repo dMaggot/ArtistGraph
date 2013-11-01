@@ -1,5 +1,6 @@
 import MySQLdb
 import mwparserfromhell
+import sys
 
 class Plugin():
 
@@ -15,8 +16,10 @@ class Plugin():
         
         result = cursor.fetchone()
         
+        db.close()
+        
         if not result:
-            print "Dead end at %s" % title
+            sys.stderr.write("Dead end at %s\n" % title)
             
             return None
         
