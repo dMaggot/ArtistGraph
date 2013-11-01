@@ -4,7 +4,7 @@ import mwparserfromhell
 class Plugin():
 
     def get_wikicode(self, title):
-        db = MySQLdb.connect(read_default_file="./my.cnf")
+        db = MySQLdb.connect(read_default_file="./my.cnf", read_default_group="client_wikipedia")
         cursor = db.cursor()
         
         cursor.execute("""
