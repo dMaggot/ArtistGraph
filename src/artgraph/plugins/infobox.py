@@ -22,7 +22,7 @@ class InfoboxPlugin(Plugin):
                     
                         db = self.get_artistgraph_connection()
                         cursor = db.cursor()
-                        cursor.execute("UPDATE artist SET fName = %s WHERE artistID = %s", (name, self._node.get_id()))
+                        cursor.execute("UPDATE artist SET name = %s WHERE artistID = %s", (name, self._node.get_id()))
                         db.commit()
                         db.close()
                     
