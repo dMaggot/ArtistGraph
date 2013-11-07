@@ -160,6 +160,62 @@ Future work will include developing the code further to create our node based
 application, making sure that it will work with our database, and deciding on a general 
 aesthetic look for the nodes in our application and the associated code required for such nodes. 
 
+\section{DB Design}
+\label{db design}
+
+The first step in designing the schema for our artist database was deciding what data would be important
+for us to meet the goals of our project. Any information that could be used to connect one music artist 
+to another was determined to be important. This included the albums they created, which labels they were 
+under over their career, any tours and performances they participated in, where they were from, and what 
+genres of music they produce. All of this information can be used to create connections between artists for 
+the user, so that they can explore new music similar to what they currently enjoy.
+
+Once the important data elements were determined, we were able to create a schema for a database that would 
+allow us to store the data that we mined about each artist. At the center of the schema is the ARTIST entity, 
+which contains the stage name, real name, ID, and origin (city, state, country) of the artist. Branching out 
+from the ARTIST entity are a variety of associative entities including: ARTIST-GENRE, TOUR-ARTIST, ASSOC_ARTIST, 
+and ALBUM_ARTIST. These entities hold the primary keys from both the ARTIST entity and the other entity that 
+they are associated with. For example, TOUR_ARTIST contains both artistID and tourID. This helped us resolve 
+the many-to-many relationships that occurred between the entities. In the TOUR entity, the ID and the name of 
+the tour are stored. Since a tour can have many performances, we also stored the date, venue, and id of the 
+performance in the PERFORMANCE entity.
+
+The GENRE entity contains the id and the genre name so we can draw connections between artists based on their 
+genre(s). The ALBUM entity contains information about the albums that an artist has produced. This includes the 
+ID, title, release date, number of tracks, number of units sold, and the ID of the label it was produced under 
+if it was produced under a label. This label ID references the attribute by the same name in the LABEL entity, 
+which contains the label name, the founder, and the date it was founded. If an artist is independent, they will 
+not have a label. If that is the case, they can be assigned the label ID that corresponds to a record in the 
+LABEL entity that has "Independent" as the label name and nulls for the other fields.
+
+Last, but not least, there is the ASSOC_ARTIST entity. This creates an explicit connection between one artist 
+and another. This is accomplished by having both parts of the primary key refer to the artist ID in the ARTIST 
+entity. Since an artist may be associated with many artists, it was necessary to create a separate table instead 
+of having a multi-valued attribute in the ARTIST entity.
+
+\section{UI Design}
+\label{ui design}
+
+The user interface (UI) for the application needed to be developed in two steps. First, the physical appearance 
+and layout of the interface, followed by the coding associated with creating the actual interface. Both of these 
+tasks are important in providing the user with a simple and enjoyable experience using the application, while 
+still connecting the user with the information in our database. 
+
+For the first portion of the design, a basic drawing was created to imitate the final design. The basic premise 
+of the interface is a series of connected nodes. Each node will represent an artist, group, or other wikipedia 
+page. The initial node will need to be searched using a standard search bar which can be accessed at any time 
+the application is being used. Once an artist is searched, his node will appear in the center of the display 
+with all of his related nodes displayed around the outside of the central node and connected by line segments. 
+Each node will be a basic rectangular shape with tapered edges and display the artists name in or around the node. 
+From this central node, the user can choose any surrounding node to become the next central node. This can continue 
+as the user desires to map the connection from the original artist to any other artist who is connect through nodes.
+Another function of the application that may make it into the final design is a "degrees of separation" counter. 
+This would count each time the user chose a node that was connected to the current central node. 
+
+The basic physical appearance of the UI has been developed however the functionality may have to be altered 
+based on the coding that will be required. Once the database has been perfected, the final step will be 
+coding the UI so the application can run as intended. 
+
 {\bf Note: Please disregard the rest of this article as it is just
 the template given. Only the above sections were 
 for this particular assignment.}
