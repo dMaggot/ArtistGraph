@@ -3,7 +3,7 @@ from artgraph.plugins import Plugin
 
 class InfoboxPlugin(Plugin):
     def __init__(self, node):
-        self._node = node
+        Plugin.__init__(self, node)
     
     @staticmethod
     def get_target_node_type():
@@ -40,4 +40,3 @@ class InfoboxPlugin(Plugin):
                         relationships.append(AssociatedActRelationship(self._node, Node(str(w.title), NodeTypes.ARTIST)))
                 
         return relationships
-        
