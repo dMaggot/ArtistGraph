@@ -31,6 +31,9 @@ class InfoboxPlugin(Plugin):
                         db.commit()
                         db.close()
                     
+                    if not t.has('associated_acts'):
+                        continue
+                    
                     associated_acts = t.get('associated_acts')
                 
                     for w in associated_acts.value.filter_wikilinks():
