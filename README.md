@@ -9,7 +9,6 @@ Requirements
 * mwparserfromhell (http://mwparserfromhell.readthedocs.org/)
 * pymw (http://pymw.sourceforge.net/)
 * mysql-python (http://mysql-python.sourceforge.net/)
-* enum (https://pypi.python.org/pypi/enum/)
 
 Instructions
 ============

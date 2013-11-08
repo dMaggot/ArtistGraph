@@ -34,9 +34,6 @@ class Miner(object):
                     sys.stderr.write("Loading %s...\n" % plugin_name)
                     
                 if node_type:
-                    # Workaround for enum __eq__ failing
-                    node_type = str(node_type)
-                    
                     if node_type in self.plugins:
                         self.plugins[node_type].append(plugin)
                     else:
@@ -68,15 +65,14 @@ class Miner(object):
     def mine_internal(self, current_node, level=0, parent=None, relationship=None):
         self.nodes.append(current_node)
         
-        for p in self.plugins[str(current_node.get_type())]:
+        for p in self.plugins[current_node.get_type()]:
             plugin = p(current_node)
             self.task_queue.append(self.master.submit_task(plugin.get_nodes, input_data=(plugin,), modules=("artgraph",), data_files=("my.cnf",)))
         
     def add_node(self, node):
         cursor = self.db.cursor()
         
-        # For some reason, enum to enum __eq__ is not working here
-        if str(node.get_type()) == str(NodeTypes.ARTIST):
+        if node.get_type() == NodeTypes.ARTIST:
             cursor.execute("""
             INSERT INTO `artist` (`stageName`)
             VALUES  (%s)

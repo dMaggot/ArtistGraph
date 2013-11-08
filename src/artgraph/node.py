@@ -1,6 +1,10 @@
-from enum import Enum
-
-NodeTypes = Enum('ARTIST', 'DISCOGRAPHY', 'SONG', 'LOCATION')
+class Enum(set):
+    def __getattr__(self, name):
+        if name in self:
+            return name
+        raise AttributeError
+    
+NodeTypes = Enum(['ARTIST', 'DISCOGRAPHY', 'SONG', 'LOCATION'])
 
 class Node(object):
     _id = None
