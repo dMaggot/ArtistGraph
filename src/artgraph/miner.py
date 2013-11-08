@@ -88,12 +88,14 @@ class Miner(object):
         
     def add_relationship(self, relationship):
         cursor = self.db.cursor()
+        a = relationship.get_subject().get_id()
+        b = relationship.get_predicate().get_id()
         
         if relationship.__class__ == artgraph.relationship.AssociatedActRelationship:
                 cursor.execute("""
-                INSERT INTO assoc_artist (artistID, assoc_ID)
+                REPLACE INTO assoc_artist (artistID, assoc_ID)
                 VALUES (%s, %s)
-                """, (relationship.get_subject().get_id(), relationship.get_predicate().get_id()))
+                """, (min(a,b), max(a,b)))
         
         cursor.close()
         self.db.commit()
