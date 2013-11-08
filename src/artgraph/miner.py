@@ -48,7 +48,7 @@ class Miner(object):
         self.mine_internal(first_node)
         (finished_task, new_relationships) = self.master.get_result()
         
-        while new_relationships:
+        while finished_task:
             for n in new_relationships:
                 new_node = n.get_predicate()
                 old_nodes = list(x for x in self.nodes if x == new_node)
