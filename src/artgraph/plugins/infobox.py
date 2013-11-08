@@ -1,7 +1,7 @@
 from artgraph.node import NodeTypes
 from artgraph.plugins import Plugin
 
-class InfoboxPlugin(Plugin):
+class ArtistInfoboxPlugin(Plugin):
     def __init__(self, node):
         Plugin.__init__(self, node)
     
