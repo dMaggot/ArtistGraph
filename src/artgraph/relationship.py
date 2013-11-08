@@ -17,4 +17,11 @@ class Relationship():
 class AssociatedActRelationship(Relationship):
     def __init__(self, subject, predicate):
         Relationship.__init__(self, subject, predicate)
-    
+        
+class ArtistGenreRelationship(Relationship):
+    def __init__(self, subject, predicate):
+        Relationship.__init__(self, subject, predicate)
+        
+class SubgenreRelationship(Relationship):
+    def __init__(self, subject, predicate):
+        Relationship.__init__(self, subject, predicate)
