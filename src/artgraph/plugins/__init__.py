@@ -6,7 +6,8 @@ class Plugin():
     _node  = None
     
     def __init__(self, node):
-        self._node = node 
+        self._node = node
+         
     @staticmethod
     def get_target_node_type():
         return None
