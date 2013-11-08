@@ -1,8 +1,13 @@
-from artgraph.plugins.plugin import Plugin
+from artgraph.node import NodeTypes
+from artgraph.plugins import Plugin
 
 class InfoboxPlugin(Plugin):
     def __init__(self, node):
         self._node = node
+    
+    @staticmethod
+    def get_target_node_type():
+        return NodeTypes.ARTIST
         
     def get_nodes(self):
         from artgraph.node import Node, NodeTypes
