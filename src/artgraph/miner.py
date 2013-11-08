@@ -1,8 +1,11 @@
+import inspect
+import sys
+
 import MySQLdb
 import pymw
 import pymw.interfaces
 
-import artgraph.plugins.infobox
+import artgraph.plugins
 import artgraph.relationship
 
 from artgraph.node import NodeTypes
@@ -13,18 +16,34 @@ class Miner(object):
     master = None
     task_queue = []
     db = None
+    plugins = {}
     
     def __init__(self, debug=False):
         mwinterface = pymw.interfaces.GenericInterface()
         self.master = pymw.PyMW_Master(mwinterface, delete_files=not debug)
         self.db = MySQLdb.connect(read_default_file="./my.cnf", read_default_group="client_artistgraph")
+        
+        self.load_plugins(debug)
+        
+    def load_plugins(self, debug):
+        for m in inspect.getmembers(artgraph.plugins, inspect.ismodule):
+            for plugin_name, plugin in inspect.getmembers(m[1], lambda (x): inspect.isclass(x) and issubclass(x, artgraph.plugins.Plugin)):
+                node_type = plugin.get_target_node_type()
+                
+                if debug:
+                    sys.stderr.write("Loading %s...\n" % plugin_name)
+                    
+                if node_type:
+                    if node_type in self.plugins:
+                        self.plugins[node_type].append(plugin)
+                    else:
+                        self.plugins[node_type] = [plugin]  
 
     def mine(self, artist):
         first_node = Node(artist, NodeTypes.ARTIST)
         self.add_node(first_node)
         self.mine_internal(first_node)
         (finished_task, new_relationships) = self.master.get_result()
-        
         
         while new_relationships:
             for n in new_relationships:
