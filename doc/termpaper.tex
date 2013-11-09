@@ -177,6 +177,11 @@ framework. To overcome this design limitation, the original code of the PyMW fra
   qualified} method name that  includes the module and the class to which the method belongs. This was done in a way
 that is backwards compatible to the way unbound methods were named originally.
 
+One significant property of the way PyMW handles the submissions of tasks, even in the simplified ``Generic Interface'',
+is that code is effectively copied over to a different file. This is important because references to file positions as
+found in the original code are not preserved. This property means debugging strategies like breakpoints cannot be used
+in the regular, which complicates the already difficult task of debugging parallel code.
+
 \section{Database Design}
 \label{db design}
 
@@ -239,7 +244,7 @@ coding the UI so the application can run as intended.
 Scientific code is often regarded as code that delivers good results at the cost of poor quality when compared to
 software targeted to wider audiences. Scientific code usually has been tailored and tested to provide accurate, high
 performance results; but skips some basic Software Engineering principles and stages in the creation process. This has
-been subject of many studies \cite{Phadke:2005:PRM:1145319.1145337,Li:2011:RSS:1985782.1985789} and it is important to
+been subject of many studies \cite{Li:2011:RSS:1985782.1985789,Phadke:2005:PRM:1145319.1145337} and it is important to
 note that there are many projects providing scientific code that cannot be framed into this description. Yet, our
 experience with PyMY, as detailed in section \ref{architecture and code}, was that we found a terse documentation and
 needed to spend a significant amount of time reading the source code to understand and accomodate our use case to the
