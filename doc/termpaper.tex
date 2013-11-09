@@ -173,9 +173,9 @@ the user, so that they can explore new music similar to what they currently enjo
 Once the important data elements were determined, we were able to create a schema for a database that would 
 allow us to store the data that we mined about each artist. At the center of the schema is the ARTIST entity, 
 which contains the stage name, real name, ID, and origin (city, state, country) of the artist. Branching out 
-from the ARTIST entity are a variety of associative entities including: ARTIST-GENRE, TOUR-ARTIST, ASSOC_ARTIST, 
-and ALBUM_ARTIST. These entities hold the primary keys from both the ARTIST entity and the other entity that 
-they are associated with. For example, TOUR_ARTIST contains both artistID and tourID. This helped us resolve 
+from the ARTIST entity are a variety of associative entities including: ARTIST-GENRE, TOUR-ARTIST, ASSOC-ARTIST, 
+and ALBUM-ARTIST. These entities hold the primary keys from both the ARTIST entity and the other entity that 
+they are associated with. For example, TOUR-ARTIST contains both artistID and tourID. This helped us resolve 
 the many-to-many relationships that occurred between the entities. In the TOUR entity, the ID and the name of 
 the tour are stored. Since a tour can have many performances, we also stored the date, venue, and id of the 
 performance in the PERFORMANCE entity.
@@ -188,7 +188,7 @@ which contains the label name, the founder, and the date it was founded. If an a
 not have a label. If that is the case, they can be assigned the label ID that corresponds to a record in the 
 LABEL entity that has "Independent" as the label name and nulls for the other fields.
 
-Last, but not least, there is the ASSOC_ARTIST entity. This creates an explicit connection between one artist 
+Last, but not least, there is the ASSOC-ARTIST entity. This creates an explicit connection between one artist 
 and another. This is accomplished by having both parts of the primary key refer to the artist ID in the ARTIST 
 entity. Since an artist may be associated with many artists, it was necessary to create a separate table instead 
 of having a multi-valued attribute in the ARTIST entity.
