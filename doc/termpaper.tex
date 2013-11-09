@@ -113,13 +113,12 @@ be shared between the team members. This effectively made the database transfera
 Overall, we have made steady progress on the creation of our database. For the most part, 
 all of the data from Wikipedia that we sought to download has been acquired and placed into
 our personal database, ``artistgraph". Since we were able to transport the database from one system to another, 
-our database should be ready for the next step in our project, code implementation
-\ref{code implementation}. 
+our database should be ready for the next step in our project, code implementation. 
 
-\section{Architecture and Code Implementation}
-\label{architecture and code implementation}
+\section{Architecture and Code}
+\label{architecture and code}
 
-The overall architecture of this project is that of a Master/Worker execution model\cite{Garg:2001:TOA:558986}.
+The overall architecture of this project is that of a Master/Worker execution model \cite{Garg:2001:TOA:558986}.
 This allows for parallel evaluation of nodes in the graphical representation of data. 
 The ``Master'' is a miner which collects and manages the nodes. Nodes will represent 
 concepts such as artists, songs, or albums which will ultimately be mapped to Wikipedia 
@@ -128,10 +127,26 @@ related to the chosen node. This plugin architecture subscribes modules of code 
 executed on particular nodes. For example, the ``Infobox'' plugin is meant to be executed 
 in ``Artist'' nodes, extracting ``Associated Acts'' from the Wikipedia article of the particular 
 artist of that node. Each plugin will find nodes related to the selected node and return 
-the type of relationship that the nodes have, be it producer, band member, or other relationship. 
-So far, the ``Infobox'' plugin is the only plugin that has been coded. 
-Future plugins will further expand the functionallity of the application. Figure \ref{componentdiagram}
-shows a component diagram for the current model.
+the type of relationship that the nodes have, be it producer, band member, or other relationship. Figure
+\ref{componentdiagram} shows a component diagram for the current model. We take advantage of Python's packaging system
+and introspection capabilities to organize plugins in a specific package called {\tt artgraph.plugins}. This package
+holds a base class called {\tt Plugin} and many other derived classes that implement plugins for different node
+types. Plugins are further organized into other subpackages grouping them according to the part of the article where they
+mine the information from. Currently, we have the following packages
+
+\begin{itemize}
+\item \textbf{\tt artgraph.plugins.infobox} that contains plugins that scrap information from the Infoboxes of their target
+  node types.
+\item \textbf{\tt artgraph.plugins.wikitext} that contains plugins that scrap information from the wikicode itself,
+  e.g. from the structure of the sections or the text in paragraphs.
+\end{itemize}
+
+We use the {\tt inspect} Python module to query for plugins. This module allows us to import the {\tt artgraph.plugins}
+module (that in turn imports all subpackages), iterate over all classes that  belong to the subpackages and implement
+the {\tt Plugin} base  class, and organize them into a dictionary of plugins indexed by their target node type. This
+approach has the advantage that a plugin can be disabled by simply specifying a target node type of {\tt None} withouth
+having to discard the code. A drawback of this approach is that the {\tt artgraph.plugins} package needs to import all
+subpackages, making it a central dictionary when this can arguably be done by inspecting the file system.
 
 \begin{figure*}[ht!]
 \centering
@@ -141,24 +156,28 @@ shows a component diagram for the current model.
 \end{figure*}
 
 In order for our application to scale easily if needed, a coding framework needed to be selected. This project 
-requires a code that would be easily extensible to parallel computing at a later phase of 
+requires a framework that would be easily extensible to parallel computing at a later phase of 
 coding while also allowing us to develop portions locally. Initially, Hadoop seemed like 
 a viable option, as it is a popular solution for large parallel applications. However, 
 this choice would not allow us to execute different pieces of code simultaneously. Because 
 Hadoop requires a single algorithm for each reduction step, it was not our choice for this project. 
 
-Our eventual choice of framework for the implementation of our application was PyMW\cite {ieee5161132}. 
+Our eventual choice of framework for the implementation of our application was PyMW \cite {ieee5161132}. 
 This was chosen because it will allow for a ``Generic Interface'' to be used for development. 
 This interface can then be transparently switched to a MPI interface for parallel computing and 
 benchmarking. It is important to notice that the original code samples for PyMW fell short from
 providing information on how to invoke object methods remotely (as opposed to invoking functions
 that are part of the standard Python distribution) but these challenges were overcome by
 understanding the way this framework splits code for remote execution and applying knowledge
-of Python's implementation of Object Oriented Programming.
-
-Future work will include developing the code further to create our node based 
-application, making sure that it will work with our database, and deciding on a general 
-aesthetic look for the nodes in our application and the associated code required for such nodes. 
+of Python's implementation of Object Oriented Programming: since the framework will call a method and pass parameters
+specified by the user, we specify a bound method and pass the \emph{self} parameter from the code in the master. This
+takes advantage of the fact that Python's bound method are treated the same as unbound methods. Furthermore, the lack of
+Object Oriented support in the framework was evident by the fact that the intermediate scripts generated from the
+interface were named after the method being called. While this seems to be a sensible design decision in principle, it
+causes collisions when the same method (in our case, named {\tt get\_nodes}) is called on different objects through the
+framework. To overcome this design limitation, the original code of the PyMW framework was patched to use a \emph{fully
+  qualified} method name that  includes the module and the class to which the method belongs. This was done in a way
+that is backwards compatible to the way unbound methods were named originally.
 
 \section{DB Design}
 \label{db design}
