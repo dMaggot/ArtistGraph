@@ -73,25 +73,26 @@ class Miner(object):
         
     def add_node(self, node):
         cursor = self.db.cursor()
+        node_type = node.get_type()
         
-        if node.get_type() == NodeTypes.ARTIST:
+        if node_type == NodeTypes.ARTIST:
             cursor.execute("""
             INSERT INTO `artist` (`stageName`)
             VALUES  (%s)
             """, (node.get_title()))
-            node.set_id(self.db.insert_id())
-        elif node.get_type() == NodeTypes.GENRE:
+        elif node_type == NodeTypes.GENRE:
             cursor.execute("""
             INSERT INTO `genre` (`genreName`)
             VALUES (%s)
             """, (node.get_title()))
-            node.set_id(self.db.insert_id())
-        elif node.get_type() == NodeTypes.ALBUM:
+        elif node_type == NodeTypes.ALBUM:
             cursor.execute("""
             INSERT INTO `album` (`title`)
             VALUES (%s)
             """, (node.get_title()))
-            node.set_id(self.db.insert_id())
+
+        # Assuming all nodes are identified by AUTO_INCREMENT
+        node.set_id(self.db.insert_id())
         
         cursor.close()
         self.db.commit()
