@@ -14,7 +14,6 @@ from artgraph.node import Node
 class Miner(object):
     nodes = []
     master = None
-    task_queue = []
     db = None
     plugins = {}
     
@@ -70,7 +69,7 @@ class Miner(object):
         if node_type in self.plugins:
             for p in self.plugins[node_type]:
                 plugin = p(current_node)
-                self.task_queue.append(self.master.submit_task(plugin.get_nodes, input_data=(plugin,), modules=("artgraph",), data_files=("my.cnf",)))
+                self.master.submit_task(plugin.get_nodes, input_data=(plugin,), modules=("artgraph",), data_files=("my.cnf",))
         
     def add_node(self, node):
         cursor = self.db.cursor()
