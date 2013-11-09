@@ -61,7 +61,7 @@ class Miner(object):
             
         self.db.close()
         
-    def mine_internal(self, current_node, level=0, parent=None, relationship=None):
+    def mine_internal(self, current_node, level=0):
         node_type = current_node.get_type()
         
         self.nodes.append(current_node)
