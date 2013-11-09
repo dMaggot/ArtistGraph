@@ -57,17 +57,20 @@ class Miner(object):
                     new_node.set_id(old_nodes[0].get_id())
                 
                 self.add_relationship(n)
-                    
+
             (finished_task, new_relationships) = self.master.get_result()
             
         self.db.close()
         
     def mine_internal(self, current_node, level=0, parent=None, relationship=None):
+        node_type = current_node.get_type()
+        
         self.nodes.append(current_node)
         
-        for p in self.plugins[current_node.get_type()]:
-            plugin = p(current_node)
-            self.task_queue.append(self.master.submit_task(plugin.get_nodes, input_data=(plugin,), modules=("artgraph",), data_files=("my.cnf",)))
+        if node_type in self.plugins:
+            for p in self.plugins[node_type]:
+                plugin = p(current_node)
+                self.task_queue.append(self.master.submit_task(plugin.get_nodes, input_data=(plugin,), modules=("artgraph",), data_files=("my.cnf",)))
         
     def add_node(self, node):
         cursor = self.db.cursor()
