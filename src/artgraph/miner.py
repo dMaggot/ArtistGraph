@@ -103,7 +103,7 @@ class Miner(object):
                 """, (min(a,b), max(a,b)))
         elif relationship.__class__ == artgraph.relationship.ArtistGenreRelationship:
             cursor.execute("""
-            INSERT INTO `artist-genre` (artistID, genreID)
+            REPLACE INTO `artist-genre` (artistID, genreID)
             VALUES (%s, %s)
             """, (a, b))
         
