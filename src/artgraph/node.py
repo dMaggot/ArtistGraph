@@ -4,7 +4,7 @@ class Enum(set):
             return name
         raise AttributeError
     
-NodeTypes = Enum(['ARTIST', 'DISCOGRAPHY', 'SONG', 'LOCATION', 'GENRE'])
+NodeTypes = Enum(['ARTIST', 'ALBUM', 'SONG', 'LOCATION', 'GENRE'])
 
 class Node(object):
     _id = None
