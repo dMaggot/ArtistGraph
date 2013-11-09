@@ -215,6 +215,13 @@ and another. This is accomplished by having both parts of the primary key refer 
 entity. Since an artist may be associated with many artists, it was necessary to create a separate table instead 
 of having a multi-valued attribute in the ARTIST entity.
 
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=8cm]{ArtistDB.pdf}
+\caption{A diagram of the Database Design}
+\label{ArtistDB}
+\end{figure}
+
 \section{UI Design}
 \label{ui design}
 
@@ -253,59 +260,13 @@ expectations of the framework.
 \section{Current Status and Future Work}
 \label{current status}
 
-Use this section to describe the current status of your work
-and what else needs to be done.
+At the moment, the Database Design covers more concepts and properties than what the code provides. One of the short
+term goals is to match the code implementation with the Database Design. After this goal is achieved, we can further
+expand the set of entities and properties mined from the data.
 
-The next subsection is meant to provide you with some help
-in dealing with figures, tables and citations.
-
-\subsection{Tables, Figures, and Citations/References}
-
-Tables, figures, and citations/references in technical
-documents need to be presented correctly. As many students
-are not familiar with using these objects, here is a quick
-guide extracted from the ACM style guide.
-
-\begin{table}
-\centering
-\caption{Feelings about Issues}
-\begin{tabular}{|l|r|l|} \hline
-Flavor&Percentage&Comments\\ \hline
-Issue 1 &  10\% & Loved it a lot\\ \hline
-Issue 2 &  20\% & Disliked it immensely\\ \hline
-Issue 3 &  30\% & Didn't care one bit\\ \hline
-Issue 4 &  40\% & Duh?\\ \hline
-\end{tabular}
-\end{table}
-
-
-First, note that figures in the term paper must be original,
-that is, created by the student: please do not cut-and-paste
-figures from any other paper you have read. Second, if you
-do need to include figures, they should be handled as
-demonstrated here. State that Figure \ref{sample graphic} is
-a simple illustration used in the ACM Style sample
-document. Figures are never below or above the
-text. Incidentally, in proper technical writing (for reasons
-beyond the scope of this discussion), table captions are
-above the table and figure captions are below the figure.
-
-You will find the BibTeX entries needed for many papers being cited,
-otherwise you can write your own versions easily and add them to the
-$report.bib$ file in the folder. There are many sample bibtex
-template files that can be used to model your own references.
-
-The list of all references will be generated in ACMRef
-standard style using the \LaTeX{}/BibTeX. Note that you
-need to first the following sequence to get the paper
-compiled correctly:
-
-\begin{enumerate}
-\item {\tt latex} {\em termpaper}
-\item {\tt bibtex} {\em termpaper}
-\item {\tt latex} {\em termpaper}
-\item {\tt latex} {\em termpaper}
-\end{enumerate}
+Section \ref{ui design} also mentions some of the ideas for the User Interface that need to be implemented. The first
+step in this process will be deciding on a good visual toolkit to build upon. This initial design will then be
+iteratively tested against the different versions of the Database Design as it is upgraded.
 
 \bibliographystyle{abbrv}
 \bibliography{termpaper}
