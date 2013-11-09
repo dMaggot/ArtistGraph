@@ -86,6 +86,12 @@ class Miner(object):
             VALUES (%s)
             """, (node.get_title()))
             node.set_id(self.db.insert_id())
+        elif node.get_type() == NodeTypes.ALBUM:
+            cursor.execute("""
+            INSERT INTO `album` (`title`)
+            VALUES (%s)
+            """, (node.get_title()))
+            node.set_id(self.db.insert_id())
         
         cursor.close()
         self.db.commit()
@@ -103,6 +109,11 @@ class Miner(object):
         elif relationship.__class__ == artgraph.relationship.ArtistGenreRelationship:
             cursor.execute("""
             REPLACE INTO `artist-genre` (artistID, genreID)
+            VALUES (%s, %s)
+            """, (a, b))
+        elif relationship.__class__ == artgraph.relationship.ArtistAlbumRelationship:
+            cursor.execute("""
+            REPLACE INTO `album_artist` (artistID, albumID)
             VALUES (%s, %s)
             """, (a, b))
         

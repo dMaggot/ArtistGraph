@@ -27,8 +27,6 @@ class Plugin():
         db.close()
         
         if not result:
-            sys.stderr.write("Dead end at %s\n" % title)
-            
             return None
         
         return mwparserfromhell.parse(result[0])
@@ -38,3 +36,4 @@ class Plugin():
 
 # List available plugin modules here
 import infobox
+import wikitext
