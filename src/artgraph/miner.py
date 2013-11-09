@@ -103,10 +103,10 @@ class Miner(object):
         b = relationship.get_predicate().get_id()
         
         if relationship.__class__ == artgraph.relationship.AssociatedActRelationship:
-                cursor.execute("""
-                REPLACE INTO assoc_artist (artistID, assoc_ID)
-                VALUES (%s, %s)
-                """, (min(a,b), max(a,b)))
+            cursor.execute("""
+            REPLACE INTO assoc_artist (artistID, assoc_ID)
+            VALUES (%s, %s)
+            """, (min(a,b), max(a,b)))
         elif relationship.__class__ == artgraph.relationship.ArtistGenreRelationship:
             cursor.execute("""
             REPLACE INTO `artist-genre` (artistID, genreID)
