@@ -77,10 +77,15 @@ CREATE  TABLE IF NOT EXISTS `ArtistDB`.`ASSOC_ARTIST` (
   `artistID` INT NOT NULL ,
   `assoc_ID` INT NOT NULL ,
   PRIMARY KEY (`artistID`, `assoc_ID`) ,
-  INDEX `fk_ARTIST_1` (`artistID` ASC, `assoc_ID` ASC) ,
+  INDEX `fk_ARTIST_ASSOC` (`artistID` ASC, `assoc_ID` ASC) ,
   CONSTRAINT `fk_ASSOC_ARTIST_ARTIST`
-    FOREIGN KEY (`artistID` , `assoc_ID` )
-    REFERENCES `ArtistDB`.`ARTIST` (`artistID` , `artistID` )
+    FOREIGN KEY (`artistID`)
+    REFERENCES `ArtistDB`.`ARTIST` (`artistID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+CONSTRAINT `fk_ASSOC_ARTIST_ARTIST2`
+    FOREIGN KEY (`assoc_ID` )
+    REFERENCES `ArtistDB`.`ARTIST` (`artistID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -103,11 +108,11 @@ CREATE  TABLE IF NOT EXISTS `ArtistDB`.`PERFORMANCE` (
   `performanceID` INT NOT NULL ,
   `date` DATE NOT NULL ,
   `venue` VARCHAR(75) NOT NULL ,
-  `tourName` VARCHAR(75) NOT NULL ,
+  `tourID` int NOT NULL ,
   PRIMARY KEY (`performanceID`) ,
-  INDEX `fk_Tour_Performance` (`tourName` ASC) ,
+  INDEX `fk_Tour_Performance` (`tourID` ASC) ,
   CONSTRAINT `fk_Tour`
-    FOREIGN KEY (`tourName` )
+    FOREIGN KEY (`tourID` )
     REFERENCES `ArtistDB`.`TOUR` (`tourID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
