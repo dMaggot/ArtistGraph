@@ -2,194 +2,229 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-CREATE SCHEMA IF NOT EXISTS `ArtistDB` DEFAULT CHARACTER SET utf8 ;
-USE `ArtistDB` ;
+DROP SCHEMA IF EXISTS `artistdb` ;
+CREATE SCHEMA IF NOT EXISTS `artistdb` DEFAULT CHARACTER SET utf8 ;
+USE `artistdb` ;
 
 -- -----------------------------------------------------
--- Table `ArtistDB`.`LOCATION`
+-- Table `artistdb`.`label`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`LOCATION` (
-  `locationID` INT NOT NULL ,
-  `city` VARCHAR(45) NULL ,
-  `state` VARCHAR(45) NULL ,
-  `country` VARCHAR(45) NULL ,
-  `imageLocation` VARCHAR(75) NULL ,
-  PRIMARY KEY (`locationID`) )
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `artistdb`.`label` ;
 
-
--- -----------------------------------------------------
--- Table `ArtistDB`.`ARTIST`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`ARTIST` (
-  `artistID` INT NOT NULL AUTO_INCREMENT ,
-  `stageName` VARCHAR(45) NULL ,
-  `name` VARCHAR(75) NULL ,
-  `imageLocation` VARCHAR(75) NULL ,
-  `LOCATION_locationID` INT NOT NULL ,
-  PRIMARY KEY (`artistID`) ,
-  INDEX `fk_ARTIST_LOCATION1` (`LOCATION_locationID` ASC) ,
-  CONSTRAINT `fk_ARTIST_LOCATION1`
-    FOREIGN KEY (`LOCATION_locationID` )
-    REFERENCES `ArtistDB`.`LOCATION` (`locationID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ArtistDB`.`LABEL`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`LABEL` (
-  `lableID` INT NOT NULL AUTO_INCREMENT ,
-  `lableName` VARCHAR(45) NULL ,
-  `lableFounder` VARCHAR(45) NULL ,
-  `dateFounded` DATE NULL ,
+CREATE  TABLE IF NOT EXISTS `artistdb`.`label` (
+  `lableID` INT(11) NOT NULL AUTO_INCREMENT ,
+  `lableName` VARCHAR(45) NULL DEFAULT NULL ,
+  `lableFounder` VARCHAR(45) NULL DEFAULT NULL ,
+  `dateFounded` DATE NULL DEFAULT NULL ,
   PRIMARY KEY (`lableID`) )
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `ArtistDB`.`ALBUM`
+-- Table `artistdb`.`album`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`ALBUM` (
-  `albumID` INT NOT NULL AUTO_INCREMENT ,
-  `lableID` INT NOT NULL ,
-  `title` VARCHAR(45) NULL ,
-  `releaseDate` DATE NULL ,
-  `numberOfTracks` INT NULL ,
-  `numSold` INT NULL ,
-  `imageLocation` VARCHAR(75) NULL ,
+DROP TABLE IF EXISTS `artistdb`.`album` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`album` (
+  `albumID` INT(11) NOT NULL AUTO_INCREMENT ,
+  `lableID` INT(11) NULL ,
+  `title` VARCHAR(45) NULL DEFAULT NULL ,
+  `releaseDate` DATE NULL DEFAULT NULL ,
+  `numberOfTracks` INT(11) NULL DEFAULT NULL ,
+  `numSold` INT(11) NULL DEFAULT NULL ,
+  `imageLocation` VARCHAR(75) NULL DEFAULT NULL ,
   PRIMARY KEY (`albumID`) ,
   INDEX `fk_ALB_LABEL1` (`lableID` ASC) ,
   CONSTRAINT `fk_ALBUM_LABEL1`
     FOREIGN KEY (`lableID` )
-    REFERENCES `ArtistDB`.`LABEL` (`lableID` )
+    REFERENCES `artistdb`.`label` (`lableID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `ArtistDB`.`ASSOC_ARTIST`
+-- Table `artistdb`.`location`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`ASSOC_ARTIST` (
-  `artistID` INT NOT NULL ,
-  `assoc_ID` INT NOT NULL ,
-  PRIMARY KEY (`artistID`, `assoc_ID`) ,
-  INDEX `fk_ARTIST_ASSOC` (`artistID` ASC, `assoc_ID` ASC) ,
-  CONSTRAINT `fk_ASSOC_ARTIST_ARTIST`
-    FOREIGN KEY (`artistID`)
-    REFERENCES `ArtistDB`.`ARTIST` (`artistID`)
+DROP TABLE IF EXISTS `artistdb`.`location` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`location` (
+  `locationID` INT(11) NOT NULL ,
+  `city` VARCHAR(45) NULL DEFAULT NULL ,
+  `state` VARCHAR(45) NULL DEFAULT NULL ,
+  `country` VARCHAR(45) NULL DEFAULT NULL ,
+  `imageLocation` VARCHAR(75) NULL DEFAULT NULL ,
+  PRIMARY KEY (`locationID`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `artistdb`.`artist`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `artistdb`.`artist` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`artist` (
+  `artistID` INT(11) NOT NULL AUTO_INCREMENT ,
+  `stageName` VARCHAR(45) NULL DEFAULT NULL ,
+  `name` VARCHAR(75) NULL DEFAULT NULL ,
+  `imageLocation` VARCHAR(75) NULL DEFAULT NULL ,
+  `LOCATION_locationID` INT(11) NOT NULL ,
+  PRIMARY KEY (`artistID`) ,
+  INDEX `fk_ARTIST_LOCATION1` (`LOCATION_locationID` ASC) ,
+  CONSTRAINT `fk_ARTIST_LOCATION1`
+    FOREIGN KEY (`LOCATION_locationID` )
+    REFERENCES `artistdb`.`location` (`locationID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `artistdb`.`album_artist`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `artistdb`.`album_artist` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`album_artist` (
+  `artistID` INT(11) NOT NULL ,
+  `albumID` INT(11) NOT NULL ,
+  PRIMARY KEY (`artistID`, `albumID`) ,
+  INDEX `fk_ARTIST_ALBUM_ind` (`albumID` ASC) ,
+  CONSTRAINT `fk_ALBUM_ARTIST_ALBUM1`
+    FOREIGN KEY (`albumID` )
+    REFERENCES `artistdb`.`album` (`albumID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-CONSTRAINT `fk_ASSOC_ARTIST_ARTIST2`
-    FOREIGN KEY (`assoc_ID` )
-    REFERENCES `ArtistDB`.`ARTIST` (`artistID` )
+  CONSTRAINT `fk_ALBUM_ARTIST_ARTIST1`
+    FOREIGN KEY (`artistID` )
+    REFERENCES `artistdb`.`artist` (`artistID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `ArtistDB`.`TOUR`
+-- Table `artistdb`.`genre`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`TOUR` (
-  `tourID` INT NOT NULL AUTO_INCREMENT ,
-  `tourName` VARCHAR(75) NOT NULL ,
-  PRIMARY KEY (`tourID`) )
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `artistdb`.`genre` ;
 
-
--- -----------------------------------------------------
--- Table `ArtistDB`.`PERFORMANCE`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`PERFORMANCE` (
-  `performanceID` INT NOT NULL ,
-  `date` DATE NOT NULL ,
-  `venue` VARCHAR(75) NOT NULL ,
-  `tourID` int NOT NULL ,
-  PRIMARY KEY (`performanceID`) ,
-  INDEX `fk_Tour_Performance` (`tourID` ASC) ,
-  CONSTRAINT `fk_Tour`
-    FOREIGN KEY (`tourID` )
-    REFERENCES `ArtistDB`.`TOUR` (`tourID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ArtistDB`.`GENRE`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`GENRE` (
-  `genreID` INT NOT NULL AUTO_INCREMENT ,
+CREATE  TABLE IF NOT EXISTS `artistdb`.`genre` (
+  `genreID` INT(11) NOT NULL AUTO_INCREMENT ,
   `genreName` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`genreID`) )
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `ArtistDB`.`ARTIST_GENRE`
+-- Table `artistdb`.`artist_genre`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`ARTIST_GENRE` (
-  `artistID` INT NOT NULL ,
-  `genreID` INT NOT NULL ,
+DROP TABLE IF EXISTS `artistdb`.`artist_genre` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`artist_genre` (
+  `artistID` INT(11) NOT NULL ,
+  `genreID` INT(11) NOT NULL ,
   PRIMARY KEY (`artistID`, `genreID`) ,
   INDEX `fk_Artist-Genre` (`genreID` ASC) ,
   CONSTRAINT `fk_Artist-Genre_ARTIST1`
     FOREIGN KEY (`artistID` )
-    REFERENCES `ArtistDB`.`ARTIST` (`artistID` )
+    REFERENCES `artistdb`.`artist` (`artistID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Artist-Genre_Genre1`
     FOREIGN KEY (`genreID` )
-    REFERENCES `ArtistDB`.`GENRE` (`genreID` )
+    REFERENCES `artistdb`.`genre` (`genreID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `ArtistDB`.`TOUR_ARTIST`
+-- Table `artistdb`.`assoc_artist`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`TOUR_ARTIST` (
-  `artistID` INT NOT NULL ,
-  `tourID` INT NOT NULL ,
+DROP TABLE IF EXISTS `artistdb`.`assoc_artist` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`assoc_artist` (
+  `artistID` INT(11) NOT NULL ,
+  `assoc_ID` INT(11) NOT NULL ,
+  PRIMARY KEY (`artistID`, `assoc_ID`) ,
+  INDEX `fk_ARTIST_ASSOC` (`artistID` ASC, `assoc_ID` ASC) ,
+  INDEX `fk_ASSOC_ARTIST_ARTIST2` (`assoc_ID` ASC) ,
+  CONSTRAINT `fk_ASSOC_ARTIST_ARTIST`
+    FOREIGN KEY (`artistID` )
+    REFERENCES `artistdb`.`artist` (`artistID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ASSOC_ARTIST_ARTIST2`
+    FOREIGN KEY (`assoc_ID` )
+    REFERENCES `artistdb`.`artist` (`artistID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `artistdb`.`tour`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `artistdb`.`tour` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`tour` (
+  `tourID` INT(11) NOT NULL AUTO_INCREMENT ,
+  `tourName` VARCHAR(75) NOT NULL ,
+  PRIMARY KEY (`tourID`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `artistdb`.`performance`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `artistdb`.`performance` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`performance` (
+  `performanceID` INT(11) NOT NULL ,
+  `date` DATE NOT NULL ,
+  `venue` VARCHAR(75) NOT NULL ,
+  `tourID` INT(11) NOT NULL ,
+  PRIMARY KEY (`performanceID`) ,
+  INDEX `fk_Tour_Performance` (`tourID` ASC) ,
+  CONSTRAINT `fk_Tour`
+    FOREIGN KEY (`tourID` )
+    REFERENCES `artistdb`.`tour` (`tourID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `artistdb`.`tour_artist`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `artistdb`.`tour_artist` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`tour_artist` (
+  `artistID` INT(11) NOT NULL ,
+  `tourID` INT(11) NOT NULL ,
   PRIMARY KEY (`artistID`, `tourID`) ,
   INDEX `fk_TOUR_ARTIST_ind` (`tourID` ASC) ,
   CONSTRAINT `fk_TOUR_ARTIST_ARTIST1`
     FOREIGN KEY (`artistID` )
-    REFERENCES `ArtistDB`.`ARTIST` (`artistID` )
+    REFERENCES `artistdb`.`artist` (`artistID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_TOUR_ARTIST_TOUR1`
     FOREIGN KEY (`tourID` )
-    REFERENCES `ArtistDB`.`TOUR` (`tourID` )
+    REFERENCES `artistdb`.`tour` (`tourID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ArtistDB`.`ALBUM_ARTIST`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `ArtistDB`.`ALBUM_ARTIST` (
-  `artistID` INT NOT NULL ,
-  `albumID` INT NOT NULL ,
-  PRIMARY KEY (`artistID`, `albumID`) ,
-  INDEX `fk_ARTIST_ALBUM_ind` (`albumID` ASC) ,
-  CONSTRAINT `fk_ALBUM_ARTIST_ARTIST1`
-    FOREIGN KEY (`artistID` )
-    REFERENCES `ArtistDB`.`ARTIST` (`artistID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ALBUM_ARTIST_ALBUM1`
-    FOREIGN KEY (`albumID` )
-    REFERENCES `ArtistDB`.`ALBUM` (`albumID` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 
