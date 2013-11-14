@@ -8,6 +8,9 @@ from argparse import RawDescriptionHelpFormatter
 
 import miner
 
+def report_modified_nodes(modified_node):
+    sys.stderr.write("Modified node %s\n" % modified_node.get_title())
+
 def main(argv=None): # IGNORE:C0111
     '''Command line options.'''
     
@@ -26,7 +29,10 @@ def main(argv=None): # IGNORE:C0111
     args = parser.parse_args()
     m = miner.Miner(args.debug)
     
-    m.mine(args.artist)
+    if args.debug:
+        m.mine(args.artist, report_modified_nodes)
+    else:
+        m.mine(args.artist)
 
     return 0
 
