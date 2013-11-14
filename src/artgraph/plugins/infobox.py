@@ -14,7 +14,8 @@ class ArtistInfoboxPlugin(Plugin):
         from artgraph.relationship import AssociatedActRelationship, ArtistGenreRelationship
         
         relationships = []
-        wikicode = self.get_wikicode(self._node.get_dbtitle())
+        node = self.get_node()
+        wikicode = self.get_wikicode(node.get_dbtitle())
         
         if wikicode:
             for t in wikicode.filter_templates():
@@ -25,7 +26,7 @@ class ArtistInfoboxPlugin(Plugin):
                     
                         db = self.get_artistgraph_connection()
                         cursor = db.cursor()
-                        cursor.execute("UPDATE artist SET name = %s WHERE artistID = %s", (name, self._node.get_id()))
+                        cursor.execute("UPDATE artist SET name = %s WHERE artistID = %s", (name, node.get_id()))
                         db.commit()
                         db.close()
                     
@@ -33,13 +34,13 @@ class ArtistInfoboxPlugin(Plugin):
                         associated_acts = t.get('associated_acts')
                         
                         for w in associated_acts.value.filter_wikilinks():
-                            relationships.append(AssociatedActRelationship(self._node, Node(str(w.title), NodeTypes.ARTIST)))
+                            relationships.append(AssociatedActRelationship(node, Node(str(w.title), NodeTypes.ARTIST)))
                     
                     if t.has('genre'):
                         genres = t.get('genre')
                          
                         for w in genres.value.filter_wikilinks():
-                            relationships.append(ArtistGenreRelationship(self._node, Node(str(w.title), NodeTypes.GENRE)))
+                            relationships.append(ArtistGenreRelationship(node, Node(str(w.title), NodeTypes.GENRE)))
                             
                     break
                 
@@ -58,7 +59,8 @@ class GenreInfoboxPlugin(Plugin):
         from artgraph.relationship import SubgenreRelationship
         
         relationships = []
-        wikicode = self.get_wikicode(self._node.get_dbtitle())
+        node = self.get_node()
+        wikicode = self.get_wikicode(node.get_dbtitle())
           
         if wikicode:
             for t in wikicode.filter_templates():
@@ -67,7 +69,7 @@ class GenreInfoboxPlugin(Plugin):
                         genres = t.get('subgenres')
                            
                         for w in genres.value.filter_wikilinks():
-                            relationships.append(SubgenreRelationship(self._node, Node(str(w.title), NodeTypes.GENRE)))
+                            relationships.append(SubgenreRelationship(node, Node(str(w.title), NodeTypes.GENRE)))
                               
                     break
                   

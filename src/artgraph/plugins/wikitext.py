@@ -16,7 +16,8 @@ class DiscographyPlugin(Plugin):
         from mwparserfromhell import parse
         
         relationships = []
-        wikicode = self.get_wikicode(self._node.get_dbtitle())
+        node = self.get_node()
+        wikicode = self.get_wikicode(node.get_dbtitle())
         list_regexp = re.compile("[#*][\s]+([^\n]+)")
         
         if wikicode:
@@ -26,7 +27,7 @@ class DiscographyPlugin(Plugin):
                     album_wikicode = parse(m)
                     
                     for w in album_wikicode.filter_wikilinks():
-                        relationships.append(ArtistAlbumRelationship(self._node, Node(w.title, NodeTypes.ALBUM)))
+                        relationships.append(ArtistAlbumRelationship(node, Node(w.title, NodeTypes.ALBUM)))
                         break
                 
         return relationships

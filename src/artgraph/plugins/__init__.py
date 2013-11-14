@@ -3,14 +3,17 @@ import mwparserfromhell
 import sys
 
 class Plugin():
-    _node  = None
+    __node  = None
     
     def __init__(self, node):
-        self._node = node
+        self.__node = node
          
     @staticmethod
     def get_target_node_type():
         return None
+    
+    def get_node(self):
+        return self.__node
 
     def get_wikicode(self, title):
         db = MySQLdb.connect(read_default_file="./my.cnf", read_default_group="client_wikipedia")
