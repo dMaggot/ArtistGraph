@@ -45,6 +45,11 @@ class Miner(object):
         (finished_task, new_relationships) = self.master.get_result()
         
         while finished_task:
+            if callback:
+                executed_plugin = finished_task.get_input_data()[0]
+                
+                callback(executed_plugin.get_node())
+            
             for n in new_relationships:
                 new_node = n.get_predicate()
                 old_nodes = list(x for x in self.nodes if x == new_node)
