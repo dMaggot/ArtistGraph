@@ -26,9 +26,12 @@ class ArtistInfoboxPlugin(Plugin):
                     
                     # Fill in current node info
                     if t.has('birth_name'):
-                        name = str(t.get('birth_name').value)
-                    
-                        cursor.execute("UPDATE artist SET name = %s WHERE artistID = %s", (name, node.get_id()))
+                        name_cleaner = BeautifulSoup(str(t.get('birth_name').value))
+                        
+                        while name_cleaner.ref:
+                            name_cleaner.ref.extract()
+                        
+                        cursor.execute("UPDATE artist SET name = %s WHERE artistID = %s", (name_cleaner.get_text(), node.get_id()))
                             
                     if t.has('image'):
                         image_cleaner = BeautifulSoup(str(t.get('image').value))
