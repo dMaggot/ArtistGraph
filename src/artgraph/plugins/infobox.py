@@ -10,6 +10,7 @@ class ArtistInfoboxPlugin(Plugin):
         return NodeTypes.ARTIST
 
     def get_nodes(self):
+        from bs4 import BeautifulSoup
         from artgraph.node import Node, NodeTypes
         from artgraph.relationship import AssociatedActRelationship, ArtistGenreRelationship
         
@@ -20,16 +21,24 @@ class ArtistInfoboxPlugin(Plugin):
         if wikicode:
             for t in wikicode.filter_templates():
                 if t.name.matches('Infobox musical artist'):
+                    db = self.get_artistgraph_connection()
+                    cursor = db.cursor()
+                    
                     # Fill in current node info
                     if t.has('birth_name'):
                         name = str(t.get('birth_name').value)
                     
-                        db = self.get_artistgraph_connection()
-                        cursor = db.cursor()
                         cursor.execute("UPDATE artist SET name = %s WHERE artistID = %s", (name, node.get_id()))
-                        db.commit()
-                        db.close()
+                            
+                    if t.has('image'):
+                        image_cleaner = BeautifulSoup(str(t.get('image').value))
+                        image = image_cleaner.get_text()
+                        
+                        cursor.execute("UPDATE artist SET imageLocation = %s WHERE artistID = %s", (self.resolve_image(image), node.get_id()))
                     
+                    db.commit()
+                    db.close()
+                        
                     if t.has('associated_acts'):
                         associated_acts = t.get('associated_acts')
                         
