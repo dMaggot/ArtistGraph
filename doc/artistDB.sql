@@ -71,7 +71,7 @@ CREATE  TABLE IF NOT EXISTS `artistdb`.`artist` (
   `stageName` VARCHAR(45) NULL DEFAULT NULL ,
   `name` VARCHAR(75) NULL DEFAULT NULL ,
   `imageLocation` VARCHAR(75) NULL DEFAULT NULL ,
-  `LOCATION_locationID` INT(11) NOT NULL ,
+  `LOCATION_locationID` INT(11) NULL ,
   PRIMARY KEY (`artistID`) ,
   INDEX `fk_ARTIST_LOCATION1` (`LOCATION_locationID` ASC) ,
   CONSTRAINT `fk_ARTIST_LOCATION1`
@@ -225,6 +225,29 @@ CREATE  TABLE IF NOT EXISTS `artistdb`.`tour_artist` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `artistdb`.`MEMBERSHIP`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `artistdb`.`MEMBERSHIP` ;
+
+CREATE  TABLE IF NOT EXISTS `artistdb`.`MEMBERSHIP` (
+  `groupID` INT(11) NOT NULL ,
+  `artistID` INT(11) NOT NULL ,
+  PRIMARY KEY (`groupID`, `artistID`) ,
+  INDEX `fk_MEMBERSHIP_artist2` (`artistID` ASC) ,
+  CONSTRAINT `fk_MEMBERSHIP_artist1`
+    FOREIGN KEY (`groupID` )
+    REFERENCES `artistdb`.`artist` (`artistID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_MEMBERSHIP_artist2`
+    FOREIGN KEY (`artistID` )
+    REFERENCES `artistdb`.`artist` (`artistID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 
