@@ -21,3 +21,9 @@ Instructions
   you can use the -d flag for debugging:
   
   $ python artistgraph/shell.py -d <artist name>
+  
+Credits
+=======
+
+The font in the logo is
+http://www.fontspace.com/khryskreations/kbshotinthedark
