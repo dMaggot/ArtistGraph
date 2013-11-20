@@ -1,5 +1,3 @@
-import artgraph.node
-
 class Relationship():
     __subject = None
     __predicate = None
