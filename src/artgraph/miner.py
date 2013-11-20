@@ -6,7 +6,6 @@ import pymw
 import pymw.interfaces
 
 import artgraph.plugins
-import artgraph.relationship
 
 from artgraph.node import NodeTypes
 from artgraph.node import Node
@@ -60,7 +59,7 @@ class Miner(object):
                 else:
                     new_node.set_id(old_nodes[0].get_id())
                 
-                self.add_relationship(n)
+                n.save(self.db.cursor())
 
             (finished_task, new_relationships) = self.master.get_result()
             
@@ -101,30 +100,6 @@ class Miner(object):
 
         # Assuming all nodes are identified by AUTO_INCREMENT
         node.set_id(self.db.insert_id())
-        
-        cursor.close()
-        self.db.commit()
-        
-    def add_relationship(self, relationship):
-        cursor = self.db.cursor()
-        a = relationship.get_subject().get_id()
-        b = relationship.get_predicate().get_id()
-        
-        if relationship.__class__ == artgraph.relationship.AssociatedActRelationship:
-            cursor.execute("""
-            REPLACE INTO assoc_artist (artistID, assoc_ID)
-            VALUES (%s, %s)
-            """, (min(a,b), max(a,b)))
-        elif relationship.__class__ == artgraph.relationship.ArtistGenreRelationship:
-            cursor.execute("""
-            REPLACE INTO `artist_genre` (artistID, genreID)
-            VALUES (%s, %s)
-            """, (a, b))
-        elif relationship.__class__ == artgraph.relationship.ArtistAlbumRelationship:
-            cursor.execute("""
-            REPLACE INTO `album_artist` (artistID, albumID)
-            VALUES (%s, %s)
-            """, (a, b))
         
         cursor.close()
         self.db.commit()
