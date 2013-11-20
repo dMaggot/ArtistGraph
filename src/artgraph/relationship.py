@@ -1,18 +1,18 @@
 import artgraph.node
 
 class Relationship():
-    _subject = None
-    _predicate = None
+    __subject = None
+    __predicate = None
     
     def __init__(self, subject, predicate):
-        self._subject = subject
-        self._predicate = predicate
+        self.__subject = subject
+        self.__predicate = predicate
         
     def get_subject(self):
-        return self._subject
+        return self.__subject
     
     def get_predicate(self):
-        return self._predicate
+        return self.__predicate
         
 class AssociatedActRelationship(Relationship):
     def __init__(self, subject, predicate):
