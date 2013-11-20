@@ -46,7 +46,7 @@ class Miner(object):
         
         while finished_task:
             if callback:
-                executed_plugin = finished_task.get_input_data()[0]
+                executed_plugin = finished_task.input_data[0]
                 
                 callback(executed_plugin.get_node())
             
