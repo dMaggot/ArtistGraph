@@ -235,6 +235,7 @@ DROP TABLE IF EXISTS `artistdb`.`MEMBERSHIP` ;
 CREATE  TABLE IF NOT EXISTS `artistdb`.`MEMBERSHIP` (
   `groupID` INT(11) NOT NULL ,
   `artistID` INT(11) NOT NULL ,
+  `current` TINYINT(1) NULL ,
   PRIMARY KEY (`groupID`, `artistID`) ,
   INDEX `fk_MEMBERSHIP_artist2` (`artistID` ASC) ,
   CONSTRAINT `fk_MEMBERSHIP_artist1`
