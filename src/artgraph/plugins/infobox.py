@@ -12,7 +12,7 @@ class ArtistInfoboxPlugin(Plugin):
     def get_nodes(self):
         from bs4 import BeautifulSoup
         from artgraph.node import Node, NodeTypes
-        from artgraph.relationship import AssociatedActRelationship, ArtistGenreRelationship
+        from artgraph.relationship import AssociatedActRelationship, MembershipRelationship, ArtistGenreRelationship
         
         relationships = []
         node = self.get_node()
@@ -53,6 +53,18 @@ class ArtistInfoboxPlugin(Plugin):
                          
                         for w in genres.value.filter_wikilinks():
                             relationships.append(ArtistGenreRelationship(node, Node(str(w.title), NodeTypes.GENRE)))
+                            
+                    if t.has('current_members'):
+                        current_members = t.get('current_members')
+                        
+                        for w in current_members.value.filter_wikilinks():
+                            relationships.append(MembershipRelationship(node, Node(str(w.title), NodeTypes.ARTIST), True))
+                            
+                    if t.has('past_members'):
+                        current_members = t.get('past_members')
+                        
+                        for w in current_members.value.filter_wikilinks():
+                            relationships.append(MembershipRelationship(node, Node(str(w.title), NodeTypes.ARTIST), False))
                             
                     break
                 

@@ -38,6 +38,24 @@ class ArtistGenreRelationship(Relationship):
         VALUES (%s, %s)
         """, (self.get_subject().get_id(), self.get_predicate().get_id()))
         
+class MembershipRelationship(Relationship):
+    def __init__(self, subject, predicate, current):
+        Relationship.__init__(self, subject, predicate)
+        self.__current = current
+        
+    def save(self, cursor):
+        a = self.get_subject().get_id()
+        b = self.get_predicate().get_id()
+        
+        cursor.execute("""
+        DELETE FROM assoc_artist WHERE (artistID = %(a)s AND assoc_ID = %(b)s) OR (artistID = %(b)s AND assoc_ID = %(a)s)
+        """, {'a': a, 'b': b})
+        
+        cursor.execute("""
+        INSERT INTO membership (groupID, artistID, current)
+        VALUES (%s, %s, %s)
+        """, (a, b, self.__current))
+        
 class ArtistAlbumRelationship(Relationship):
     def __init__(self, subject, predicate):
         Relationship.__init__(self, subject, predicate)
