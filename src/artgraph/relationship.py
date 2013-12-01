@@ -1,4 +1,4 @@
-class Relationship():
+class Relationship(object):
     __subject = None
     __predicate = None
     
