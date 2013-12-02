@@ -16,6 +16,9 @@ Rectangle {
         case "GENRE":
             component = Qt.createComponent("GenreNodeRenderer.qml");
             break;
+        case "ALBUM":
+            component = Qt.createComponent("AlbumNodeRenderer.qml");
+            break;
         }
 
 
