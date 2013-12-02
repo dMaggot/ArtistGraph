@@ -27,7 +27,7 @@ class DiscographyPlugin(Plugin):
                     album_wikicode = parse(m)
                     
                     for w in album_wikicode.filter_wikilinks():
-                        relationships.append(ArtistAlbumRelationship(node, Node(w.title, NodeTypes.ALBUM)))
+                        relationships.append(ArtistAlbumRelationship(node, Node(str(w.title), NodeTypes.ALBUM)))
                         break
                 
         return relationships
