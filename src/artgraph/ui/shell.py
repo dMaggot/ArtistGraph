@@ -24,21 +24,36 @@ class NodeWrapper(QObject):
     def name(self):
         return self.__node.get_title()
     
-    @pyqtProperty(str, notify=property_changed)
+    @pyqtProperty(QUrl, notify=property_changed)
     def image(self):
-        return self.get_property('imageLocation')
+        image_location = self.get_property('imageLocation')
+        
+        if image_location:
+            return QUrl(image_location)
+        else:
+            return QUrl()
     
     @pyqtProperty(str, notify=property_changed)
     def realName(self):
-        return self.get_property('name')
+        name = self.get_property('name')
+        
+        if name:
+            return name
+        else:
+            return ""
         
     def get_property(self, property_name):
         db = MySQLdb.connect(read_default_file="./my.cnf", read_default_group="client_artistgraph")
         cursor = db.cursor()
         
         cursor.execute("SELECT %s FROM %s WHERE artistID = %s" % (property_name, self.get_table_name(), "%s"), (self.__node.get_id(),))
+        result = cursor.fetchone()
+        db.close()
         
-        return cursor.fetchone()[0]
+        if result:
+            return result[0]
+        else:
+            return result
     
     def get_table_name(self):
         node_type = self.__node.get_type()
