@@ -15,6 +15,7 @@ class Miner(object):
     master = None
     db = None
     plugins = {}
+    cancel = False
     
     def __init__(self, debug=False):
         mwinterface = pymw.interfaces.GenericInterface()
@@ -55,7 +56,9 @@ class Miner(object):
                 
                 if len(old_nodes) == 0:
                     self.add_node(new_node)
-                    self.mine_internal(new_node, callback)
+                    
+                    if not self.cancel:
+                        self.mine_internal(new_node, callback)
                 else:
                     new_node.set_id(old_nodes[0].get_id())
                 

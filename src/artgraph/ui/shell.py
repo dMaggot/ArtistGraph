@@ -73,8 +73,12 @@ class MinerGui(QApplication):
         self.__nodewrappers_map = {}
         self.__is_setup = False
         self.__view = None
+        self.aboutToQuit.connect(self.cancel_miner)
         self.node_added_signal.connect(self.node_added)
         self.relationship_added_signal.connect(self.relationship_added)
+        
+    def cancel_miner(self):
+        self.__miner.cancel = True
         
     def set_view(self, view):
         self.__view = view
