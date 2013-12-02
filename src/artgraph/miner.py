@@ -38,17 +38,17 @@ class Miner(object):
                     else:
                         self.plugins[node_type] = [plugin]  
 
-    def mine(self, artist, callback=None):
+    def mine(self, artist, node_callback=None, relationship_callback=None):
         first_node = Node(artist, NodeTypes.ARTIST)
         self.add_node(first_node)
-        self.mine_internal(first_node, callback)
+        self.mine_internal(first_node, node_callback)
         (finished_task, new_relationships) = self.master.get_result()
         
         while finished_task:
-            if callback:
+            if node_callback:
                 executed_plugin = finished_task.input_data[0]
                 
-                callback(executed_plugin.get_node())
+                node_callback(executed_plugin.get_node())
             
             for n in new_relationships:
                 new_node = n.get_predicate()
@@ -58,11 +58,14 @@ class Miner(object):
                     self.add_node(new_node)
                     
                     if not self.cancel:
-                        self.mine_internal(new_node, callback)
+                        self.mine_internal(new_node, node_callback)
                 else:
                     new_node.set_id(old_nodes[0].get_id())
                 
                 n.save(self.db.cursor())
+                
+                if relationship_callback:
+                    relationship_callback(n)
 
             (finished_task, new_relationships) = self.master.get_result()
             

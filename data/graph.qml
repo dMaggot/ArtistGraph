@@ -11,7 +11,7 @@ Rectangle {
     }
 
     function addRelationship(relationship) {
-        console.log(relationship);
+        //console.log(relationship);
     }
 
     GraphRenderer {

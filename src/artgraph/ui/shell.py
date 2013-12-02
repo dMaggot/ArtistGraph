@@ -12,7 +12,7 @@ from artgraph.node import NodeTypes
 class NodeWrapper(QObject):
     property_changed = pyqtSignal()
     
-    def __init__(self, node, parent = None):
+    def __init__(self, node, parent=None):
         QObject.__init__(self, parent)
         self.__node = node
         
@@ -43,7 +43,7 @@ class NodeWrapper(QObject):
     def get_table_name(self):
         node_type = self.__node.get_type()
         
-        if node_type  == NodeTypes.ARTIST:
+        if node_type == NodeTypes.ARTIST:
             return 'artist'
         elif node_type == NodeTypes.ALBUM:
             return 'album'
@@ -53,17 +53,25 @@ class NodeWrapper(QObject):
             return 'genre'
         
 class RelationshipWrapper(QObject):
-    def __init__(self, relationship):
-        self.__relationship = relationship
-        
-    def get_subject(self):
-        return NodeWrapper(self.__relationship.get_subject())
+    property_changed = pyqtSignal()
     
-    def get_predicate(self):
-        return NodeWrapper(self.__relationship.get_predicate())
+    def __init__(self, relationship, parent=None):
+        QObject.__init__(self, parent)
+        self.__relationship = relationship
+        self.__subject_wrapper = NodeWrapper(relationship.get_subject())
+        self.__predicate_wrapper = NodeWrapper(relationship.get_predicate())  
+     
+    @pyqtProperty(NodeWrapper, notify=property_changed)    
+    def subject(self):
+        return self.__subject_wrapper 
+     
+    @pyqtProperty(NodeWrapper, notify=property_changed)
+    def predicate(self):
+        return self.__predicate_wrapper
 
 class MinerGui(QApplication):
     node_added_signal = pyqtSignal(NodeWrapper)
+    node_updated_signal = pyqtSignal(NodeWrapper)
     relationship_added_signal = pyqtSignal(RelationshipWrapper)
     
     def __init__(self, argv):
@@ -75,7 +83,9 @@ class MinerGui(QApplication):
         self.__view = None
         self.aboutToQuit.connect(self.cancel_miner)
         self.node_added_signal.connect(self.node_added)
+        self.node_updated_signal.connect(self.node_updated)
         self.relationship_added_signal.connect(self.relationship_added)
+        self.relationships = []
         
     def cancel_miner(self):
         self.__miner.cancel = True
@@ -84,7 +94,8 @@ class MinerGui(QApplication):
         self.__view = view
         
     def start_miner(self, artist):
-        self.__thread_id = thread.start_new_thread(self.__miner.mine, (artist, self.node_callback))
+        thread_args = (artist, self.node_callback, self.relationship_callback)
+        self.__thread_id = thread.start_new_thread(self.__miner.mine, thread_args)
         
     def node_callback(self, node):
         if not self.__current_node:
@@ -95,25 +106,40 @@ class MinerGui(QApplication):
             
             self.__nodewrappers_map[node.get_id()] = wrapper
             self.node_added_signal.emit(wrapper)
-        else:
-            if node.get_id() in self.__nodewrappers_map:
-                self.node_added_signal.emit(self.__nodewrappers_map[node.get_id()])
+        elif node.get_id() in self.__nodewrappers_map:
+            self.node_updated_signal.emit(self.__nodewrappers_map[node.get_id()])
         
     def relationship_callback(self, relationship):
-        self.relationship_added_signal.emit(relationship)
+        a = relationship.get_subject().get_id()
+        b = relationship.get_predicate().get_id()
+        
+        if self.__current_node.get_id() in [a, b]:
+            relationship_wrapper = RelationshipWrapper(relationship)
+            
+            if self.__current_node.get_id() <> a:
+                node_wrapper = relationship_wrapper.subject
+                self.__nodewrappers_map[a] = node_wrapper
+                self.node_added_signal.emit(node_wrapper)
+            elif self.__current_node.get_id() <> b:
+                node_wrapper = relationship_wrapper.predicate
+                self.__nodewrappers_map[b] = node_wrapper
+                self.node_added_signal.emit(node_wrapper)
+
+            self.relationships.append(relationship_wrapper)
+            self.relationship_added_signal.emit(relationship_wrapper)
         
     def node_added(self, node_wrapper):
         if not self.__is_setup:
             self.__view.setSource(QUrl('data/graph.qml'))
             self.__is_setup = True
-            self.__view.rootObject().addNode(node_wrapper)
-        else:
-            node_wrapper.property_changed.emit()
+            
+        self.__view.rootObject().addNode(node_wrapper)
+            
+    def node_updated(self, node_wrapper):
+        node_wrapper.property_changed.emit()
         
-    def relationship_added(self, relationship):
-        pass
-#         if self.__current_node in [relationship.get_subect(), relationship.get_predicate()]:
-#             self.__view.rootObject().addRelationship(RelationshipWrapper(relationship))
+    def relationship_added(self, relationship_wrapper):
+        self.__view.rootObject().addRelationship(relationship_wrapper)
         
 if __name__ == "__main__":
     app = MinerGui(sys.argv)
