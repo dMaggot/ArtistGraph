@@ -21,6 +21,10 @@ class NodeWrapper(QObject):
         return self.__node.get_id()
     
     @pyqtProperty(str, notify=property_changed)
+    def type(self):
+        return str(self.__node.get_type())
+    
+    @pyqtProperty(str, notify=property_changed)
     def name(self):
         return self.__node.get_title()
     
