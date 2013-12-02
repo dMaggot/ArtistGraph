@@ -135,11 +135,11 @@ class MinerGui(QApplication):
         if self.__current_node.get_id() in [a, b]:
             relationship_wrapper = RelationshipWrapper(relationship)
             
-            if self.__current_node.get_id() <> a:
+            if (self.__current_node.get_id() <> a) and (a not in self.__nodewrappers_map):
                 node_wrapper = relationship_wrapper.subject
                 self.__nodewrappers_map[a] = node_wrapper
                 self.node_added_signal.emit(node_wrapper)
-            elif self.__current_node.get_id() <> b:
+            elif (self.__current_node.get_id() <> b) and (b not in self.__nodewrappers_map):
                 node_wrapper = relationship_wrapper.predicate
                 self.__nodewrappers_map[b] = node_wrapper
                 self.node_added_signal.emit(node_wrapper)
@@ -153,7 +153,7 @@ class MinerGui(QApplication):
             self.__is_setup = True
             
         self.__view.rootObject().addNode(node_wrapper)
-            
+    
     def node_updated(self, node_wrapper):
         node_wrapper.property_changed.emit()
         
