@@ -14,6 +14,16 @@ Rectangle {
         //console.log(relationship);
     }
 
+    Image {
+        anchors {
+            right: parent.right
+            top: parent.top
+            margins: 25
+        }
+
+        source: 'ArtsitGraph.png'
+    }
+
     GraphRenderer {
         id: graph
         anchors {
