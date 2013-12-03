@@ -50,7 +50,7 @@ class NodeWrapper(QObject):
         db = MySQLdb.connect(read_default_file="./my.cnf", read_default_group="client_artistgraph")
         cursor = db.cursor()
         
-        cursor.execute("SELECT %s FROM %s WHERE artistID = %s" % (property_name, self.get_table_name(), "%s"), (self.__node.get_id(),))
+        cursor.execute("SELECT %s FROM %s WHERE id = %s" % (property_name, self.get_table_name(), "%s"), (self.__node.get_id(),))
         result = cursor.fetchone()
         db.close()
         

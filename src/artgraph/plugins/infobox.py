@@ -31,13 +31,13 @@ class ArtistInfoboxPlugin(Plugin):
                         while name_cleaner.ref:
                             name_cleaner.ref.extract()
                         
-                        cursor.execute("UPDATE artist SET name = %s WHERE artistID = %s", (name_cleaner.get_text(), node.get_id()))
+                        cursor.execute("UPDATE artist SET name = %s WHERE id = %s", (name_cleaner.get_text(), node.get_id()))
                             
                     if t.has('image'):
                         image_cleaner = BeautifulSoup(str(t.get('image').value))
                         image = image_cleaner.get_text()
                         
-                        cursor.execute("UPDATE artist SET imageLocation = %s WHERE artistID = %s", (self.resolve_image(image), node.get_id()))
+                        cursor.execute("UPDATE artist SET imageLocation = %s WHERE id = %s", (self.resolve_image(image), node.get_id()))
                     
                     db.commit()
                     db.close()
