@@ -7,9 +7,9 @@ Requirements
 ============
 
 * mwparserfromhell (http://mwparserfromhell.readthedocs.org/)
-* pymw (http://pymw.sourceforge.net/)
+* pymw (https://github.com/eheien/pymw)
 * mysql-python (http://mysql-python.sourceforge.net/)
-
+  
 Instructions
 ============
 
@@ -18,7 +18,7 @@ Instructions
 
   $ python artistgraph/shell.py <artist name>
   
-  you can use the -d flag for debugging:
+you can use the -d flag for debugging:
   
   $ python artistgraph/shell.py -d <artist name>
   
