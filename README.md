@@ -9,6 +9,7 @@ Requirements
 * mwparserfromhell (http://mwparserfromhell.readthedocs.org/)
 * pymw (https://github.com/eheien/pymw)
 * mysql-python (http://mysql-python.sourceforge.net/)
+* BeautifulSoup (http://www.crummy.com/software/BeautifulSoup/)
   
 Instructions
 ============
