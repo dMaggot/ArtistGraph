@@ -241,9 +241,10 @@ as the user desires to map the connection from the original artist to any other 
 Another function of the application that may make it into the final design is a "degrees of separation" counter. 
 This would count each time the user chose a node that was connected to the current central node. 
 
-The basic physical appearance of the UI has been developed however the functionality may have to be altered 
-based on the coding that will be required. Once the database has been perfected, the final step will be 
-coding the UI so the application can run as intended. 
+The design was then implemented using QML, a language for rapid development of interactive user interfaces that is part
+of the Qt Project. Another project named PyQt4 provides Python bindings that enable easy integration of the QML layout
+with our code. The integration of a user interface with the mining code requires a multithreaded message passing system
+to be able to present results and interact with the user while mining new nodes in the background.
 
 \section{Lessons Learned}
 \label{mistakes}
