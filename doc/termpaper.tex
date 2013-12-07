@@ -142,7 +142,7 @@ mine the information from. Currently, we have the following packages
 We use the {\tt inspect} Python module to query for plugins. This module allows us to import the {\tt artgraph.plugins}
 module (that in turn imports all subpackages), iterate over all classes that  belong to the subpackages and implement
 the {\tt Plugin} base  class, and organize them into a dictionary of plugins indexed by their target node type. This
-approach has the advantage that a plugin can be disabled by simply specifying a target node type of {\tt None} withouth
+approach has the advantage that a plugin can be disabled by simply specifying a target node type of {\tt None} without
 having to discard the code. A drawback of this approach is that the {\tt artgraph.plugins} package needs to import all
 subpackages, making it a central dictionary when this can arguably be done by inspecting the file system.
 
