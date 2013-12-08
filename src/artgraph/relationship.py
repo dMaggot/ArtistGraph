@@ -14,6 +14,12 @@ class Relationship(object):
     
     def save(self, cursor):
         pass
+    
+    def labelsp(self):
+        return None
+    
+    def labelps(self):
+        return None
         
 class AssociatedActRelationship(Relationship):
     def __init__(self, subject, predicate):
@@ -28,6 +34,12 @@ class AssociatedActRelationship(Relationship):
         VALUES (%s, %s)
         """, (min(a,b), max(a,b)))
         
+    def labelsp(self):
+        return "Associated to"
+    
+    def labelps(self):
+        return "Associated to"
+        
 class ArtistGenreRelationship(Relationship):
     def __init__(self, subject, predicate):
         Relationship.__init__(self, subject, predicate)
@@ -37,6 +49,12 @@ class ArtistGenreRelationship(Relationship):
         REPLACE INTO `artist_genre` (artistID, genreID)
         VALUES (%s, %s)
         """, (self.get_subject().get_id(), self.get_predicate().get_id()))
+        
+    def labelsp(self):
+        return "Genre is"
+    
+    def labelps(self):
+        return "Representative artist"
         
 class MembershipRelationship(Relationship):
     def __init__(self, subject, predicate, current):
@@ -56,6 +74,18 @@ class MembershipRelationship(Relationship):
         VALUES (%s, %s, %s)
         """, (a, b, self.__current))
         
+    def labelsp(self):
+        if self.__current:
+            return "Member of"
+        else:
+            return "Former member of"
+        
+    def labelps(self):
+        if self.__current:
+            return "Member"
+        else:
+            return "Former member"
+        
 class ArtistAlbumRelationship(Relationship):
     def __init__(self, subject, predicate):
         Relationship.__init__(self, subject, predicate)
@@ -66,6 +96,18 @@ class ArtistAlbumRelationship(Relationship):
         VALUES (%s, %s)
         """, (self.get_subject().get_id(), self.get_predicate().get_id()))
         
+    def labelsp(self):
+        return "Has album"
+    
+    def labelps(self):
+        return "By"
+        
 class SubgenreRelationship(Relationship):
     def __init__(self, subject, predicate):
         Relationship.__init__(self, subject, predicate)
+        
+    def labelsp(self):
+        return "Subgenre"
+        
+    def labelps(self):
+        return "Subgenre of"

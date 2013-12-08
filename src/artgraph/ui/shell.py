@@ -2,7 +2,7 @@ import sys
 import thread
 import MySQLdb
 
-from PyQt4.QtCore import QUrl, QObject, pyqtSignal, pyqtProperty
+from PyQt4.QtCore import Qt, QObject, QUrl, QVariant, QAbstractListModel, pyqtSignal, pyqtProperty
 from PyQt4.QtGui import QApplication
 from PyQt4.QtDeclarative import QDeclarativeView
 
@@ -74,19 +74,28 @@ class NodeWrapper(QObject):
 class RelationshipWrapper(QObject):
     property_changed = pyqtSignal()
     
-    def __init__(self, relationship, parent=None):
+    def __init__(self, relationship, current_node, parent=None):
         QObject.__init__(self, parent)
         self.__relationship = relationship
         self.__subject_wrapper = NodeWrapper(relationship.get_subject())
-        self.__predicate_wrapper = NodeWrapper(relationship.get_predicate())  
+        self.__predicate_wrapper = NodeWrapper(relationship.get_predicate())
+        
+        if self.__relationship.get_subject().get_id() == current_node.get_id():
+            self.__label = self.__relationship.labelsp()
+        else:
+            self.__label = self.__relationship.labelps()  
      
-    @pyqtProperty(NodeWrapper, notify=property_changed)    
+    @pyqtProperty(NodeWrapper, notify=property_changed) 
     def subject(self):
         return self.__subject_wrapper 
      
     @pyqtProperty(NodeWrapper, notify=property_changed)
     def predicate(self):
         return self.__predicate_wrapper
+    
+    @pyqtProperty(str, notify=property_changed)
+    def label(self):
+        return self.__label
 
 class MinerGui(QApplication):
     node_added_signal = pyqtSignal(NodeWrapper)
@@ -98,13 +107,13 @@ class MinerGui(QApplication):
         self.__miner = Miner()
         self.__current_node = None
         self.__nodewrappers_map = {}
+        self.__relationships = []
         self.__is_setup = False
         self.__view = None
         self.aboutToQuit.connect(self.cancel_miner)
         self.node_added_signal.connect(self.node_added)
         self.node_updated_signal.connect(self.node_updated)
         self.relationship_added_signal.connect(self.relationship_added)
-        self.relationships = []
         
     def cancel_miner(self):
         self.__miner.cancel = True
@@ -133,7 +142,7 @@ class MinerGui(QApplication):
         b = relationship.get_predicate().get_id()
         
         if self.__current_node.get_id() in [a, b]:
-            relationship_wrapper = RelationshipWrapper(relationship)
+            relationship_wrapper = RelationshipWrapper(relationship, self.__current_node)
             
             if (self.__current_node.get_id() <> a) and (a not in self.__nodewrappers_map):
                 node_wrapper = relationship_wrapper.subject
@@ -144,7 +153,7 @@ class MinerGui(QApplication):
                 self.__nodewrappers_map[b] = node_wrapper
                 self.node_added_signal.emit(node_wrapper)
 
-            self.relationships.append(relationship_wrapper)
+            self.__relationships.append(relationship_wrapper)
             self.relationship_added_signal.emit(relationship_wrapper)
         
     def node_added(self, node_wrapper):
