@@ -101,6 +101,7 @@ class MinerGui(QApplication):
     node_added_signal = pyqtSignal(NodeWrapper)
     node_updated_signal = pyqtSignal(NodeWrapper)
     relationship_added_signal = pyqtSignal(RelationshipWrapper)
+    nodeChanged = pyqtSignal(NodeWrapper)
     
     def __init__(self, argv):
         QApplication.__init__(self, argv)
@@ -114,6 +115,7 @@ class MinerGui(QApplication):
         self.node_added_signal.connect(self.node_added)
         self.node_updated_signal.connect(self.node_updated)
         self.relationship_added_signal.connect(self.relationship_added)
+        self.nodeChanged.connect(self.query_miner)
         
     def cancel_miner(self):
         self.__miner.cancel = True
@@ -124,6 +126,9 @@ class MinerGui(QApplication):
     def start_miner(self, artist):
         thread_args = (artist, self.node_callback, self.relationship_callback)
         self.__thread_id = thread.start_new_thread(self.__miner.mine, thread_args)
+        
+    def query_miner(self, node_wrapper):
+        print "Querying %s" % node_wrapper.id
         
     def node_callback(self, node):
         if not self.__current_node:
@@ -158,6 +163,7 @@ class MinerGui(QApplication):
         
     def node_added(self, node_wrapper):
         if not self.__is_setup:
+            self.__view.rootContext().setContextProperty('globalApp', self)
             self.__view.setSource(QUrl('data/graph.qml'))
             self.__is_setup = True
             

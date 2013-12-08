@@ -36,4 +36,11 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
+
+    MouseArea {
+        anchors.fill: layoutColumn
+        onClicked: {
+            globalApp.nodeChanged(node);
+        }
+    }
 }
