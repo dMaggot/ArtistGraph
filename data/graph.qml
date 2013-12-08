@@ -12,7 +12,7 @@ Rectangle {
 
     function addNode(node) {
         var component = null;
-        var radius = 300.0;
+        var radius = 0.8;
 
         // We should probably find out how to marshall NodeTypes
         switch(node.type) {
@@ -36,9 +36,9 @@ Rectangle {
 
                 // At this point the children count is at least 2: main node and this new node
                 if(nodeGroup.children.length > 2) {
-                    for (var i = 2; i < nodeGroup.children.length; i++) {
-                        nodeGroup.children[i].anchors.horizontalCenterOffset = Math.cos(2 * (i - 1) * Math.PI / (nodeGroup.children.length - 1)) * radius;
-                        nodeGroup.children[i].anchors.verticalCenterOffset = Math.sin(2 * (i - 1) * Math.PI / (nodeGroup.children.length - 1)) * radius;
+                    for (var i = 1; i < nodeGroup.children.length; i++) {
+                        nodeGroup.children[i].anchors.horizontalCenterOffset = Math.cos(2 * (i - 1) * Math.PI / (nodeGroup.children.length - 1)) * radius * (graphArea.width / 2);
+                        nodeGroup.children[i].anchors.verticalCenterOffset = Math.sin(2 * (i - 1) * Math.PI / (nodeGroup.children.length - 1)) * radius * (graphArea.height / 2);
                     }
                 }
                 else {
