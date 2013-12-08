@@ -98,3 +98,35 @@ class GenreInfoboxPlugin(Plugin):
                     break
                   
         return relationships
+    
+class AlbumInfoboxPlugin(Plugin):
+    def __init__(self, node):
+        Plugin.__init__(self, node)
+        
+    @staticmethod
+    def get_target_node_type():
+        return NodeTypes.ALBUM
+    
+    def get_nodes(self):
+        from bs4 import BeautifulSoup
+        
+        node = self.get_node()
+        wikicode = self.get_wikicode(node.get_dbtitle())
+        
+        if wikicode:
+            for t in wikicode.filter_templates():
+                if t.name.matches('Infobox album'):
+                    db = self.get_artistgraph_connection()
+                    cursor = db.cursor()
+                    
+                    # Fill in current node info
+                    if t.has('Cover'):
+                        image_cleaner = BeautifulSoup(str(t.get('Cover').value))
+                        image = image_cleaner.get_text()
+                        
+                        cursor.execute("UPDATE album SET imageLocation = %s WHERE id = %s", (self.resolve_image(image), node.get_id()))
+                    
+                    db.commit()
+                    db.close()
+                  
+        return []
