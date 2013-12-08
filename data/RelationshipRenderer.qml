@@ -2,13 +2,12 @@ import QtQuick 1.1
 
 import QtQuick 1.1
 
-Rectangle {
+Item {
     property variant relationship
     property Item end
 
     rotation: getSlope(end.x, end.y)
     transformOrigin: Item.Left;
-    color: 'transparent'
 
     function getSlope(endx, endy)
     {
@@ -24,7 +23,7 @@ Rectangle {
 
         Rectangle {
             id: arrow
-            color: "black"
+            color: 'black'
             height: 2
             smooth: true;
             width: getWidth(end.x, end.y);
