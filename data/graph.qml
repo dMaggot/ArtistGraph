@@ -6,10 +6,6 @@ Rectangle {
     height: 768
     color: 'silver'
 
-    function updateGraph(node) {
-        console.log('added ' + node);
-    }
-
     function addNode(node) {
         var component = null;
         var radius = 0.8;
@@ -27,28 +23,16 @@ Rectangle {
             break;
         }
 
-
         if (component != null) {
-            if (nodeGroup.children.length > 0) {
-                var nodeRenderer = component.createObject(nodeGroup, { 'node': node, 'scale': 0.25 });
+            var nodeRenderer = component.createObject(nodeGroup, { 'node': node, 'scale': (nodeGroup.children.length > 0) ? 0.25 : 1.0 });
 
-                nodeRenderer.anchors.centerIn = nodeGroup;
+            nodeRenderer.anchors.centerIn = nodeGroup;
 
-                // At this point the children count is at least 2: main node and this new node
-                if(nodeGroup.children.length > 2) {
-                    for (var i = 1; i < nodeGroup.children.length; i++) {
-                        nodeGroup.children[i].anchors.horizontalCenterOffset = Math.cos(2 * (i - 1) * Math.PI / (nodeGroup.children.length - 1)) * radius * (graphArea.width / 2);
-                        nodeGroup.children[i].anchors.verticalCenterOffset = Math.sin(2 * (i - 1) * Math.PI / (nodeGroup.children.length - 1)) * radius * (graphArea.height / 2);
-                    }
+            if (nodeGroup.children.length > 1) {
+                for (var i = 1; i < nodeGroup.children.length; i++) {
+                    nodeGroup.children[i].anchors.horizontalCenterOffset = Math.cos(2 * (i - 1) * Math.PI / (nodeGroup.children.length - 1)) * radius * (graphArea.width / 2);
+                    nodeGroup.children[i].anchors.verticalCenterOffset = Math.sin(2 * (i - 1) * Math.PI / (nodeGroup.children.length - 1)) * radius * (graphArea.height / 2);
                 }
-                else {
-                    nodeGroup.children[1].anchors.horizontalCenterOffset = radius;
-                }
-            }
-            else {
-                var nodeRenderer = component.createObject(nodeGroup, { 'node': node });
-
-                nodeRenderer.anchors.centerIn = nodeGroup
             }
         }
         else {
@@ -99,13 +83,5 @@ Rectangle {
     Item {
         id: nodeGroup
         anchors.fill: parent
-    }
-
-    MouseArea {
-        anchors.fill: parent
-
-        onClicked: {
-            console.log('got a click!');
-        }
     }
 }
