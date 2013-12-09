@@ -28,3 +28,6 @@ Credits
 
 The font in the logo is
 http://www.fontspace.com/khryskreations/kbshotinthedark
+
+The background is
+https://picasaweb.google.com/lh/photo/tQESi8xiZ3Z6plpz2QWlyNeBuGY5nSD5sJ6y0N6PJEk
