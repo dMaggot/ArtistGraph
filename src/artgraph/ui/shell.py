@@ -152,9 +152,15 @@ class MinerGui(QApplication):
         if node.get_type() == NodeTypes.ARTIST:
             cursor.execute("SELECT albumID, title FROM album_artist INNER JOIN album ON album_artist.albumID = album.id WHERE artistID = %s", (node.get_id(),))
             self.wrap_and_add_results(node, cursor, NodeTypes.ALBUM, ArtistAlbumRelationship, True)
+            
+            cursor.execute("SELECT artistID, stageName, current FROM membership INNER JOIN artist ON membership.artistID = artist.id WHERE groupID = %s", (node.get_id(),))
+            self.wrap_and_add_membership_results(node, cursor, True)
                 
             cursor.execute("SELECT artistID, stageName FROM assoc_artist INNER JOIN artist ON assoc_artist.artistID = artist.id WHERE assoc_ID = %s", (node.get_id(),))
             self.wrap_and_add_results(node, cursor, NodeTypes.ARTIST, AssociatedActRelationship, True)
+            
+            cursor.execute("SELECT groupID, stageName, current FROM membership INNER JOIN artist ON membership.groupID = artist.id WHERE artistID = %s", (node.get_id(),))
+            self.wrap_and_add_membership_results(node, cursor, False)
                 
             cursor.execute("SELECT assoc_ID, stageName FROM assoc_artist INNER JOIN artist ON assoc_artist.assoc_ID = artist.id WHERE artistID = %s", (node.get_id(),))
             self.wrap_and_add_results(node, cursor, NodeTypes.ARTIST, AssociatedActRelationship, True)
@@ -180,6 +186,21 @@ class MinerGui(QApplication):
                 self.node_added(relationship_wrapper.predicate)
             else:
                 relationship_wrapper = RelationshipWrapper(RelationshipClass(new_node, node), node, self)
+                self.node_added(relationship_wrapper.subject)
+            
+            self.relationship_added(relationship_wrapper)
+            
+    def wrap_and_add_membership_results(self, node, cursor, direction):
+        for r in cursor:
+            new_node = Node(r[1], NodeTypes.ARTIST)
+            new_node.set_id(r[0])
+            current = r[2]
+            
+            if direction:
+                relationship_wrapper = RelationshipWrapper(MembershipRelationship(node, new_node, current), node, self)
+                self.node_added(relationship_wrapper.predicate)
+            else:
+                relationship_wrapper = RelationshipWrapper(MembershipRelationship(new_node, node, current), node, self)
                 self.node_added(relationship_wrapper.subject)
             
             self.relationship_added(relationship_wrapper)
