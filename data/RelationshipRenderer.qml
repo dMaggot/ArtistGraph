@@ -7,7 +7,7 @@ Item {
     property Item end
 
     rotation: getSlope(end.x, end.y)
-    transformOrigin: Item.Left;
+    transformOrigin: Item.Left
 
     function getSlope(endx, endy)
     {
@@ -25,8 +25,9 @@ Item {
             id: arrow
             color: 'black'
             height: 2
-            smooth: true;
-            width: getWidth(end.x, end.y);
+            smooth: true
+            width: getWidth(end.x, end.y)
+            opacity: 0.5
 
             function getWidth(endx, endy)
             {
