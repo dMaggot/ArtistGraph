@@ -194,26 +194,34 @@ the user, so that they can explore new music similar to what they currently enjo
 
 Once the important data elements were determined, we were able to create a schema for a database that would 
 allow us to store the data that we mined about each artist. At the center of the schema is the ARTIST entity, 
-which contains the stage name, real name, ID, and origin (city, state, country) of the artist. Branching out 
-from the ARTIST entity are a variety of associative entities including: ARTIST-GENRE, TOUR-ARTIST, ASSOC-ARTIST, 
-and ALBUM-ARTIST. These entities hold the primary keys from both the ARTIST entity and the other entity that 
-they are associated with. For example, TOUR-ARTIST contains both artistID and tourID. This helped us resolve 
-the many-to-many relationships that occurred between the entities. In the TOUR entity, the ID and the name of 
-the tour are stored. Since a tour can have many performances, we also stored the date, venue, and id of the 
-performance in the PERFORMANCE entity.
+which contains the stage name, real name, ID, the URL for the image, and the locationID for the artist. Location 
+information was originally part of the ARTIST entity, but has been moved to its own entity. This allows for easier 
+connections between artists based on location. Branching out from the ARTIST entity are a variety of associative 
+entities including: ARTIST-GENRE, TOUR-ARTIST, ASSOC-ARTIST, and ALBUM-ARTIST. These entities hold the primary 
+keys from both the ARTIST entity and the other entity that they are associated with. For example, TOUR-ARTIST 
+contains both artistID and tourID. This helped us resolve the many-to-many relationships that occurred between 
+the entities. In the TOUR entity, the ID and the name of the tour are stored. Since a tour can have many performances, 
+we also stored the date, venue, and id of the performance in the PERFORMANCE entity.
 
 The GENRE entity contains the id and the genre name so we can draw connections between artists based on their 
 genre(s). The ALBUM entity contains information about the albums that an artist has produced. This includes the 
 ID, title, release date, number of tracks, number of units sold, and the ID of the label it was produced under 
 if it was produced under a label. This label ID references the attribute by the same name in the LABEL entity, 
 which contains the label name, the founder, and the date it was founded. If an artist is independent, they will 
-not have a label. If that is the case, they can be assigned the label ID that corresponds to a record in the 
-LABEL entity that has "Independent" as the label name and nulls for the other fields.
+not have a label. If that is the case, they can be assigned a null label ID. Initially we had planned on creating 
+an ID in the  that corresponds to a record in the LABEL entity that has "Independent" as the label name and nulls 
+for the other fields. However, we realized that there is a possibility that "Independent" could become an actual label.
+For this reason, we decided to leave the field null if a label could not be found. The LOCATION entity contains all of 
+the information regarding the location, or hometown, of the artist. This includes city, state, country, and the URL for the image of the location.
 
-Last, but not least, there is the ASSOC-ARTIST entity. This creates an explicit connection between one artist 
+Last, but not least, there are the ASSOC-ARTIST and MEMBERSHIP entities. The ASSOC-ARTIST entity creates an explicit connection between one artist 
 and another. This is accomplished by having both parts of the primary key refer to the artist ID in the ARTIST 
 entity. Since an artist may be associated with many artists, it was necessary to create a separate table instead 
-of having a multi-valued attribute in the ARTIST entity.
+of having a multi-valued attribute in the ARTIST entity. The MEMBERSHIP entity creates a connection between bands and their members. Since each band will have its own ID, it was necessary to have another table that would show the relationship that an artist has with that band. It is also possible to determine if the artist is a current member of the band by making use of the "current" flag.
+
+As mentioned above, the creation and design of the database was fluid until near the end of the project. 
+Minor changes were made, when needed, in order to make coding easier, improve the overall design, capture 
+new relationships, or simply fix errors that were missed in the previous version.
 
 \begin{figure}[hbtp]
 \centering
