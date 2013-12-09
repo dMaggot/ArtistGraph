@@ -1,12 +1,17 @@
 import QtQuick 1.0
 
-Rectangle {
+Item {
     id: windowRect
     width: 1024
     height: 768
-    color: 'silver'
 
     signal initialArtist(string artistName)
+
+    Image {
+        anchors.fill: parent
+        source: 'background.jpg'
+        opacity: 0.5
+    }
 
     Image {
         anchors {

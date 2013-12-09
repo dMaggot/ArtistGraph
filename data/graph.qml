@@ -1,10 +1,9 @@
 import QtQuick 1.0
 
-Rectangle {
+Item {
     id: graphArea
     width: 1024
     height: 768
-    color: 'silver'
 
     function addNode(node) {
         var component = null;
@@ -63,6 +62,12 @@ Rectangle {
                 }
             }
         }
+    }
+
+    Image {
+        anchors.fill: parent
+        source: 'background.jpg'
+        opacity: 0.5
     }
 
     Image {
