@@ -7,7 +7,8 @@ from PyQt4.QtGui import QApplication
 from PyQt4.QtDeclarative import QDeclarativeView
 
 from artgraph.miner import Miner
-from artgraph.node import NodeTypes
+from artgraph.node import Node, NodeTypes
+from artgraph.relationship import *
 
 class NodeWrapper(QObject):
     property_changed = pyqtSignal()
@@ -136,13 +137,52 @@ class MinerGui(QApplication):
         self.__nodewrappers_map = {}
         self.__relationships = []
         self.__is_setup = False
-                
         self.__current_node = node_wrapper.get_node()
         self.__nodewrappers_map[node_wrapper.id] = node_wrapper
         
         self.node_added(node_wrapper)
+        self.get_relationships(self.__current_node)
         
         self.blockSignals(False)
+        
+    def get_relationships(self, node):
+        db = MySQLdb.connect(read_default_file="./my.cnf", read_default_group="client_artistgraph")
+        cursor = db.cursor()
+        
+        if node.get_type() == NodeTypes.ARTIST:
+            cursor.execute("SELECT albumID, title FROM album_artist INNER JOIN album ON album_artist.albumID = album.id WHERE artistID = %s", (node.get_id(),))
+            self.wrap_and_add_results(node, cursor, NodeTypes.ALBUM, ArtistAlbumRelationship, True)
+                
+            cursor.execute("SELECT artistID, stageName FROM assoc_artist INNER JOIN artist ON assoc_artist.artistID = artist.id WHERE assoc_ID = %s", (node.get_id(),))
+            self.wrap_and_add_results(node, cursor, NodeTypes.ARTIST, AssociatedActRelationship, True)
+                
+            cursor.execute("SELECT assoc_ID, stageName FROM assoc_artist INNER JOIN artist ON assoc_artist.assoc_ID = artist.id WHERE artistID = %s", (node.get_id(),))
+            self.wrap_and_add_results(node, cursor, NodeTypes.ARTIST, AssociatedActRelationship, True)
+            
+            cursor.execute("SELECT genreID, genreName FROM artist_genre INNER JOIN genre ON artist_genre.genreID = genre.id WHERE artistID = %s", (node.get_id(),))
+            self.wrap_and_add_results(node, cursor, NodeTypes.GENRE, ArtistGenreRelationship, True)
+        if node.get_type() == NodeTypes.ALBUM:
+            cursor.execute("SELECT artistID, stageName FROM album_artist INNER JOIN artist ON album_artist.artistID = artist.id WHERE albumID = %s", (node.get_id(),))
+            self.wrap_and_add_results(node, cursor, NodeTypes.ARTIST, ArtistAlbumRelationship, False)
+        if node.get_type() == NodeTypes.GENRE:
+            cursor.execute("SELECT artistID, stageName FROM artist_genre INNER JOIN artist ON artist_genre.artistID = artist.id WHERE genreID = %s", (node.get_id(),))
+            self.wrap_and_add_results(node, cursor, NodeTypes.ARTIST, ArtistGenreRelationship, False)
+                
+        db.close()
+        
+    def wrap_and_add_results(self, node, cursor, node_type, RelationshipClass, direction):
+        for r in cursor:
+            new_node = Node(r[1], node_type)
+            new_node.set_id(r[0])
+            
+            if direction:
+                relationship_wrapper = RelationshipWrapper(RelationshipClass(node, new_node), node, self)
+                self.node_added(relationship_wrapper.predicate)
+            else:
+                relationship_wrapper = RelationshipWrapper(RelationshipClass(new_node, node), node, self)
+                self.node_added(relationship_wrapper.subject)
+            
+            self.relationship_added(relationship_wrapper)
         
     def node_callback(self, node):
         if not self.__current_node:
