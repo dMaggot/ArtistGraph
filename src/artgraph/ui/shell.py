@@ -2,7 +2,7 @@ import sys
 import thread
 import MySQLdb
 
-from PyQt4.QtCore import Qt, QObject, QUrl, QVariant, QAbstractListModel, pyqtSignal, pyqtProperty
+from PyQt4.QtCore import Qt, QObject, QUrl, pyqtSignal, pyqtProperty
 from PyQt4.QtGui import QApplication
 from PyQt4.QtDeclarative import QDeclarativeView
 
@@ -15,6 +15,9 @@ class NodeWrapper(QObject):
     def __init__(self, node, parent=None):
         QObject.__init__(self, parent)
         self.__node = node
+        
+    def get_node(self):
+        return self.__node
         
     @pyqtProperty(int, notify=property_changed)
     def id(self):
@@ -115,7 +118,7 @@ class MinerGui(QApplication):
         self.node_added_signal.connect(self.node_added)
         self.node_updated_signal.connect(self.node_updated)
         self.relationship_added_signal.connect(self.relationship_added)
-        self.nodeChanged.connect(self.query_miner)
+        self.nodeChanged.connect(self.query_miner, Qt.QueuedConnection)
         
     def cancel_miner(self):
         self.__miner.cancel = True
@@ -128,7 +131,18 @@ class MinerGui(QApplication):
         self.__thread_id = thread.start_new_thread(self.__miner.mine, thread_args)
         
     def query_miner(self, node_wrapper):
-        print "Querying %s" % node_wrapper.id
+        self.blockSignals(True)
+        
+        self.__nodewrappers_map = {}
+        self.__relationships = []
+        self.__is_setup = False
+                
+        self.__current_node = node_wrapper.get_node()
+        self.__nodewrappers_map[node_wrapper.id] = node_wrapper
+        
+        self.node_added(node_wrapper)
+        
+        self.blockSignals(False)
         
     def node_callback(self, node):
         if not self.__current_node:
