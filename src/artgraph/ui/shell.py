@@ -114,18 +114,27 @@ class MinerGui(QApplication):
         self.__nodewrappers_map = {}
         self.__relationships = []
         self.__is_setup = False
-        self.__view = None
+        
+        self.setup_view()
+
         self.aboutToQuit.connect(self.cancel_miner)
         self.node_added_signal.connect(self.node_added)
         self.node_updated_signal.connect(self.node_updated)
         self.relationship_added_signal.connect(self.relationship_added)
         self.nodeChanged.connect(self.query_miner, Qt.QueuedConnection)
         
+    def setup_view(self):
+        self.__view = QDeclarativeView()
+        self.__view.setSource(QUrl('data/main.qml'))
+    
+        toplevelObject =  self.__view.rootObject()
+        toplevelObject.initialArtist.connect(self.start_miner)
+        
+        self.__view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        self.__view.show()
+        
     def cancel_miner(self):
         self.__miner.cancel = True
-        
-    def set_view(self, view):
-        self.__view = view
         
     def start_miner(self, artist):
         thread_args = (artist, self.node_callback, self.relationship_callback)
@@ -252,15 +261,5 @@ class MinerGui(QApplication):
         
 if __name__ == "__main__":
     app = MinerGui(sys.argv)
-    
-    # Create the QML user interface.
-    view = QDeclarativeView()
-    app.set_view(view)
-    view.setSource(QUrl('data/main.qml'))
-    toplevelObject = view.rootObject()
-    toplevelObject.initialArtist.connect(app.start_miner)
-    view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
-    
-    view.show()
     
     sys.exit(app.exec_())
