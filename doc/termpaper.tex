@@ -225,7 +225,7 @@ new relationships, or simply fix errors that were missed in the previous version
 
 \begin{figure*}[ht!]
 \centering
-\includegraphics[width=12cm]{ArtistDB.pdf}
+\includegraphics[width=15cm]{ArtistDB.png}
 \caption{A diagram of the Database Design}
 \label{ArtistDB}
 \end{figure*}
@@ -273,13 +273,26 @@ dynamic development and collaboration.
 \section{Current Status and Future Work}
 \label{current status}
 
-At the moment, the Database Design covers more concepts and properties than what the code provides. One of the short
-term goals is to match the code implementation with the Database Design. After this goal is achieved, we can further
-expand the set of entities and properties mined from the data.
+Many other relationships between the entities can be discovered using
+approaches similar to the ones used in this project. As future work, we
+suggest implementing these approaches taking advantage of the plugin
+architecture of the code.
 
-Section \ref{ui design} also mentions some of the ideas for the User Interface that need to be implemented. The first
-step in this process will be deciding on a good visual toolkit to build upon. This initial design will then be
-iteratively tested against the different versions of the Database Design as it is upgraded.
+Details related to the modeling of the relationships should be reviewed in
+order to accommodate for more complicated relationships. In our
+implementation, we noticed that the relationship of an artist being member of
+a band already introduces a conflict with the more general idea of an artist
+being associated to another artist.
+
+In terms of the user interface, many improvements – both in the display of the
+data and in the user experience – can be done. In particular, using a more
+recent version of the QML technology should provide the project with a
+superior interface in terms of performance and design.
+
+Finally, several issues arose regarding the concurrent access of the data from
+different threads and these are yet to be addressed. Under special
+circumstances, deadlocks appear and the nature of the code makes it difficult to
+predict or debug these issues.
 
 \bibliographystyle{abbrv}
 \bibliography{termpaper}
