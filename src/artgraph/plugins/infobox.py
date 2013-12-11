@@ -109,7 +109,10 @@ class AlbumInfoboxPlugin(Plugin):
     
     def get_nodes(self):
         from bs4 import BeautifulSoup
+        from artgraph.node import Node, NodeTypes
+        from artgraph.relationship import AlbumLabelRelationship
         
+        relationships = []
         node = self.get_node()
         wikicode = self.get_wikicode(node.get_dbtitle())
         
@@ -125,8 +128,14 @@ class AlbumInfoboxPlugin(Plugin):
                         image = image_cleaner.get_text()
                         
                         cursor.execute("UPDATE album SET imageLocation = %s WHERE id = %s", (self.resolve_image(image), node.get_id()))
+                        
+                    if t.has('Label'):
+                        labels = t.get('Label')
+                           
+                        for w in labels.value.filter_wikilinks():
+                            relationships.append(AlbumLabelRelationship(node, Node(str(w.title), NodeTypes.LABEL)))                        
                     
                     db.commit()
                     db.close()
                   
-        return []
+        return relationships

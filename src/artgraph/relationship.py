@@ -101,6 +101,21 @@ class ArtistAlbumRelationship(Relationship):
     
     def labelps(self):
         return "By"
+    
+class AlbumLabelRelationship(Relationship):
+    def __init__(self, subject, predicate):
+        Relationship.__init__(self, subject, predicate)
+        
+    def save(self, cursor):
+        cursor.execute("""
+        UPDATE album SET lableID = %s WHERE id = %s 
+        """, (self.get_predicate().get_id(), self.get_subject().get_id()))
+        
+    def labelsp(self):
+        return "Under label"
+    
+    def labelps(self):
+        return "Made album"
         
 class SubgenreRelationship(Relationship):
     def __init__(self, subject, predicate):

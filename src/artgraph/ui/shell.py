@@ -179,9 +179,15 @@ class MinerGui(QApplication):
         if node.get_type() == NodeTypes.ALBUM:
             cursor.execute("SELECT artistID, stageName FROM album_artist INNER JOIN artist ON album_artist.artistID = artist.id WHERE albumID = %s", (node.get_id(),))
             self.wrap_and_add_results(node, cursor, NodeTypes.ARTIST, ArtistAlbumRelationship, False)
+            cursor.execute("SELECT lableID, lableName FROM album INNER JOIN label ON album.lableID = label.ID WHERE album.id = %s", (node.get_id(),))
+            self.wrap_and_add_results(node, cursor, NodeTypes.LABEL, AlbumLabelRelationship, True)
         if node.get_type() == NodeTypes.GENRE:
             cursor.execute("SELECT artistID, stageName FROM artist_genre INNER JOIN artist ON artist_genre.artistID = artist.id WHERE genreID = %s", (node.get_id(),))
             self.wrap_and_add_results(node, cursor, NodeTypes.ARTIST, ArtistGenreRelationship, False)
+        if node.get_type() == NodeTypes.LABEL:
+            cursor.execute("SELECT id, title FROM album WHERE lableID = %s", (node.get_id(),))
+            self.wrap_and_add_results(node, cursor, NodeTypes.ALBUM, AlbumLabelRelationship, False)
+            
                 
         db.close()
         

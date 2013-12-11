@@ -20,6 +20,9 @@ Item {
         case "ALBUM":
             component = Qt.createComponent("AlbumNodeRenderer.qml");
             break;
+        case "LABEL":
+            component = Qt.createComponent("LabelNodeRenderer.qml");
+            break;
         }
 
         if (component != null) {

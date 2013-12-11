@@ -103,6 +103,11 @@ class Miner(object):
             INSERT INTO `album` (`title`)
             VALUES (%s)
             """, (node.get_title()))
+        elif node_type == NodeTypes.LABEL:
+            cursor.execute("""
+            INSERT INTO `label` (`lableName`)
+            VALUES (%s)
+            """, (node.get_title()))
 
         # Assuming all nodes are identified by AUTO_INCREMENT
         node.set_id(self.db.insert_id())
